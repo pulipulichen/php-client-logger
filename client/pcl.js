@@ -22,7 +22,18 @@ $pcl = function (_config) {
         /**
          * @type {Number} 偏移天數
          */
-        log_day_offset: 0
+        log_day_offset: 0,
+        
+        /**
+         * cookie 會過期的日子
+         * undefined 表示關掉網頁就會忘記
+         */
+        cookie_expires_day: 30,
+        
+        /**
+         * @type {String} Cookie適用範圍 
+         */
+        cookie_path: "/"
     };
     
     var _log = [];
@@ -46,7 +57,8 @@ $pcl = function (_config) {
                 //_u.t("已經讀取完成囉");
 
                 // 開場先把profile設定好
-                _.set_profile_uuid(_u.create_uuid());
+                //_.set_profile_uuid(_u.create_uuid());
+                _.profile.load();
                 
                 _.mouse_event.init();
             });
@@ -69,20 +81,37 @@ $pcl = function (_config) {
     
     // ------------------------------------------------------------------
     
+    _.profile = {};
+    
     /**
-     * 
      * @param {type} _name
      * @returns {$pcl}
      */
-    _.set_profile_name = function (_name) {
+    _.profile.set_name = function (_name) {
         _profile.name = _name;
+        _u.cookie.set("profile", _profile);
         return this;
     };
     
-    _.set_profile_uuid = function (_uuid) {
+    _.profile.set_uuid = function (_uuid) {
         _profile.uuid = _uuid;
+        _u.cookie.set("profile", _profile);
         return this;
     };
+    
+    
+    _.profile.load = function () {
+        _profile = _u.cookie.get("profile");
+        if (typeof(_profile) !== "object") {
+            _profile = {};
+        }
+        if (typeof(_profile.uuid) !== "string") {
+            _.profile.set_uuid(_u.create_uuid());
+        }
+        return this;
+    };
+    
+    // ---------------------------------------------
     
     /**
      * 
@@ -182,7 +211,7 @@ $pcl = function (_config) {
             
             setTimeout(function () {
                 _u.load_jquery(_callback);
-            }, 3000);
+            }, 500);
         }
         return this;
     };
@@ -288,6 +317,55 @@ $pcl = function (_config) {
             }
             return _json;
         }
+    };
+    
+    _u.stringify = function (_value) {
+        var _type = typeof(_value);
+        if (_value === undefined || _value === null) {
+            _u.t("無資料");
+            return _value;
+        }
+        else if (_type === "object") {
+            _u.t("轉換");
+            return JSON.stringify(_value);
+        }
+        else {
+            _u.t("什麼類型呢？" + _type);
+            return _value;
+        }
+    };
+    
+    _u.cookie = {};
+    
+    _u.cookie.set = function (_key, _value) {
+        var d = new Date();
+        d.setTime(d.getTime() + (_config.cookie_expires_day * 24 * 60 * 60 * 1000));
+        var expires = "expires="+ d.toUTCString();
+        _value = _u.stringify(_value);
+        _u.t(_value);
+        document.cookie = _key + "=" + _value + "; " + expires + "; path=" + _config.cookie_path;
+    };
+    
+    _u.cookie.get = function (_key) {
+        var _name = _key + "=";
+        var _ca = document.cookie.split(';');
+        var _value;
+        for(var i = 0; i < _ca.length; i++) {
+            var _c = _ca[i];
+            while (_c.charAt(0) === ' ') {
+                _c = _c.substring(1);
+            }
+            if (_c.indexOf(_name) === 0) {
+                _value = _c.substring(_name.length, _c.length);
+                _value = _u.json_parse(_value);
+                return _value;
+            }
+        }
+        return;
+    };
+    
+    _u.cookie.delete = function (_key) {
+        document.cookie = _key + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     };
     
     // ------------------------------------------------------------------
