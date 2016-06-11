@@ -1,2 +1,2 @@
 <?php
-header("server");
+header("Location: demo");

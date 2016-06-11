@@ -12,22 +12,30 @@ $pcl = function (_config) {
         /**
          * @type 伺服器的位置
          */
-        server: "/php-client-logger/server/logger.php",
+        server: "/php-client-logger/"
     };
     
     // ------------------------------------------------------------------
+    
     
     _.init = function () {
         _config = _u.setup_config();
         
         _u.load_jquery(function () {
-            
+            _u.t("已經讀取完成囉");
         });
+        return this;
     };
     
     // ------------------------------------------------------------------
     
     var _u = {};
+    
+    /**
+     * 暫存區
+     * @type {Object}
+     */
+    var _tmp = {};
     
     /**
      * 設定檔調整，載入預設值
@@ -48,8 +56,41 @@ $pcl = function (_config) {
         return _config;
     };
     
+    /** 
+     * 負責載入jQuery
+     * @param {function} _callback
+     * @returns {$pcl._u}
+     */
     _u.load_jquery = function (_callback) {
-        
+        if (typeof($) === "function") {
+            $(function () {
+                _u.trigger_callback(_callback);
+            });
+        }
+        else if (typeof(jQuery) === "function") {
+            $ = jQuery;
+            $(function () {
+                _u.trigger_callback(_callback);
+            });
+        }
+        else {
+            
+            if (typeof(_tmp.loading_jquery) === "undefined") {
+                var _script = document.createElement('script');
+                _script.type = 'text/javascript';
+                var _url = _config.server + "client/lib/jquery/jquery-1.12.4.min.js";
+                _script.src = _url;
+
+                document.getElementsByTagName('head')[0].appendChild(_script);
+
+                _tmp.loading_jquery = true;
+            }
+            
+            setTimeout(function () {
+                _u.load_jquery(_callback);
+            }, 3000);
+        }
+        return this;
     };
     
     /**
@@ -86,6 +127,7 @@ $pcl = function (_config) {
     };
     
     // ------------------------------------------------------------------
+    _.init();
     
     return _;
 };
