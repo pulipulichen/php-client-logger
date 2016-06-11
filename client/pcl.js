@@ -35,7 +35,7 @@ $pcl = function (_config) {
          */
         cookie_path: "/",
         
-        log_queue_length: 100,
+        log_queue_length: 10
     };
     
     var _log_queue = [];
@@ -139,6 +139,8 @@ $pcl = function (_config) {
             _log.timestamp = _u.get_timestamp();
         }
         
+        _u.t("log", _log);
+        
         _log_queue.push(_log);
         
         // 如果太多，則送到伺服器
@@ -160,10 +162,11 @@ $pcl = function (_config) {
         // 3. 準備傳送資料
         var _url = _config.server + "server/store.php";
         var _data = {
-            profile: _profile,
-            log: _store_queue
+            profile: _u.stringify(_profile),
+            logs: _u.stringify(_store_queue)
         };
         
+        _u.t("_.log.store() 要儲存囉");
         $.post(_url, _data, function () {
             _u.t("_.log.store() 完成");
         });
@@ -191,7 +194,14 @@ $pcl = function (_config) {
     };
     
     _.mouse_event.move = function (_event) {
-        
+        var _x = _event.pageX;
+        var _y = _event.pageY;
+        var _event_name = "mouse_event_move";
+        _.log.add({
+            x: _event.pageX,
+            y: _event.pageY,
+            event_name: "mouse_event_move"
+        });
         return this;
     };
     
@@ -322,7 +332,7 @@ $pcl = function (_config) {
             _message = _title;
         }
         else {
-            _message = "[" + _title + "] " + _message;
+            _message = "[" + _title + "] " + _u.stringify(_message);
         }
         console.trace(_message);
         return this;
@@ -401,15 +411,15 @@ $pcl = function (_config) {
     _u.stringify = function (_value) {
         var _type = typeof(_value);
         if (_value === undefined || _value === null) {
-            _u.t("無資料");
+            //_u.t("無資料");
             return _value;
         }
         else if (_type === "object") {
-            _u.t("轉換");
+            //_u.t("轉換");
             return JSON.stringify(_value);
         }
         else {
-            _u.t("什麼類型呢？" + _type);
+            //_u.t("什麼類型呢？" + _type);
             return _value;
         }
     };
