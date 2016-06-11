@@ -33,11 +33,13 @@ $pcl = function (_config) {
         /**
          * @type {String} Cookie適用範圍 
          */
-        cookie_path: "/"
+        cookie_path: "/",
+        
+        log_queue_length: 100,
     };
     
-    var _log = [];
-    var _store_queue = [];
+    var _log_queue = [];
+    //var _store_queue = [];
     
     var _profile = {
         name: undefined,
@@ -113,9 +115,12 @@ $pcl = function (_config) {
     
     // ---------------------------------------------
     
+    _.log = {};
+    
     /**
      * 
      * @param {type} _log = {
+     *      timestamp: @number,
      *      x: @,
      *      y: @,
      *      event: @,
@@ -123,11 +128,45 @@ $pcl = function (_config) {
      * }
      * @returns {$pcl}
      */
-    _.add_log = function (_log) {
+    _.log.add = function (_log) {
+        if (typeof(_log) === "string") {
+            _log = {
+                event: _log
+            };
+        }
+        
+        if (typeof(_log.timestamp) !== "number") {
+            _log.timestamp = _u.get_timestamp();
+        }
+        
+        _log_queue.push(_log);
+        
+        // 如果太多，則送到伺服器
+        if (_log_queue.length > _config.log_queue_length) {
+            _.log.store();
+        }
+        
         return this;
     };
     
-    _.store_log = function () {
+    _.log.store = function () {
+        
+        // 1. 先把原本的log_queue丟到store_queue
+        var _store_queue = _log_queue;
+        
+        // 2. 清空log_queue
+        _log_queue = [];
+        
+        // 3. 準備傳送資料
+        var _url = _config.server + "server/store.php";
+        var _data = {
+            profile: _profile,
+            log: _store_queue
+        };
+        
+        $.post(_url, _data, function () {
+            _u.t("_.log.store() 完成");
+        });
         
     };
     
@@ -135,18 +174,58 @@ $pcl = function (_config) {
     _.mouse_event = {};
     
     _.mouse_event.init = function () {
+        
+        $(document).mousemove(function (_event) {
+            _.mouse_event.move(_event);
+        });
+        
+        $(document).click(function (_event) {
+            _.mouse_event.click(_event);
+        });
+        
+        $(document).dblclick(function (_event) {
+            _.mouse_event.dblclick(_event);
+        });
+        
         return this;
     };
     
-    _.mouse_event.move = function () {
+    _.mouse_event.move = function (_event) {
+        
         return this;
     };
     
-    _.mouse_event.click = function () {
+    _.mouse_event.click = function (_event) {
         return this;
     };
     
-    _.mouse_event.dblclick = function () {
+    _.mouse_event.dblclick = function (_event) {
+        return this;
+    };
+    
+    // ------------------------------------------------------------------
+    
+    _.window_event = {};
+    
+    _.window_event.init = function () {
+        $(window).blur(function (_event) {
+            _.window_event.blur(_event);
+        });
+        
+        $(window).focus(function (_event) {
+            _.window_event.focus(_event);
+        });
+        
+        return this;
+    };
+    
+    _.window_event.blur = function (_event) {
+        _.log.add("window_event_blur");
+        return this;
+    };
+    
+    _.window_event.focus = function (_event) {
+        _.log.add("window_event_focus");
         return this;
     };
     
