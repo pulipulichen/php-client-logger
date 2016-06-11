@@ -15,6 +15,11 @@ $pcl = function (_config) {
         server: "/php-client-logger/",
         
         /**
+         * @type {Number} 要儲存的資料量
+         */
+        log_queue_length: 100,
+        
+        /**
          * @type {Boolean} 是否自動開始記錄
          */
         auto_start_log: true,
@@ -35,7 +40,25 @@ $pcl = function (_config) {
          */
         cookie_path: "/",
         
-        log_queue_length: 10
+        /**
+         * @type {String} 預設儲存的名字
+         */
+        profile_name: undefined,
+        
+        /**
+         * @type {Boolean} 是否啟用滑鼠事件
+         */
+        enable_mouse_event: true,
+        
+        /**
+         * @type {Boolean} 是否啟用視窗事件
+         */
+        enable_window_event: true,
+        
+        /**
+         * @type {Boolean} 是否啟用鍵盤事件
+         */
+        enable_key_event: true
     };
     
     var _log_queue = [];
@@ -44,8 +67,6 @@ $pcl = function (_config) {
     var _profile = {
         name: undefined,
         uuid: undefined
-        //ip: undefined,
-        //referer: undefined
     };
     
     // ------------------------------------------------------------------
@@ -62,9 +83,31 @@ $pcl = function (_config) {
                 //_.set_profile_uuid(_u.create_uuid());
                 _.profile.load();
                 
-                _.mouse_event.init();
+                if (_config.auto_start_log === true) {
+                    _.start();
+                }
             });
         });
+        return this;
+    };
+    
+    _.start = function () {
+        _.log.add("start");
+        if (_config.enable_mouse_event === true) {
+            _.mouse_event.init();
+        }
+        if (_config.enable_window_event === true) {
+            _.window_event.init();
+        } 
+        if (_config.enable_key_event === true) {
+            _.key_event.init();
+        }
+        return this;
+    };
+    
+    _.end = function () {
+        _.log.add("end");
+        _.log.store();
         return this;
     };
     
@@ -90,6 +133,14 @@ $pcl = function (_config) {
      * @returns {$pcl}
      */
     _.profile.set_name = function (_name) {
+        _.log.store();
+        _profile.name = _name;
+        _u.cookie.set("profile", _profile);
+        _.log.add("profile.set_name", _name);
+        return this;
+    };
+    
+    _.profile.set_default_name = function (_name) {
         _profile.name = _name;
         _u.cookie.set("profile", _profile);
         return this;
@@ -110,6 +161,10 @@ $pcl = function (_config) {
         if (typeof(_profile.uuid) !== "string") {
             _.profile.set_uuid(_u.create_uuid());
         }
+        
+        if (typeof(_profile.name) !== "string" && typeof(_config.profile_name) === "string") {
+            _.profile.set_default_name(_config.profile_name);
+        }
         return this;
     };
     
@@ -128,11 +183,14 @@ $pcl = function (_config) {
      * }
      * @returns {$pcl}
      */
-    _.log.add = function (_log) {
+    _.log.add = function (_log, _note) {
         if (typeof(_log) === "string") {
             _log = {
                 event: _log
             };
+        }
+        if (_note !== undefined && typeof(_log.note) === "undefined") {
+            _log.note = _note;
         }
         
         if (typeof(_log.timestamp) !== "number") {
@@ -144,14 +202,22 @@ $pcl = function (_config) {
         _log_queue.push(_log);
         
         // 如果太多，則送到伺服器
-        if (_log_queue.length > _config.log_queue_length) {
+        if (_log_queue.length > _config.log_queue_length - 1) {
             _.log.store();
         }
         
         return this;
     };
     
-    _.log.store = function () {
+    /**
+     * 
+     * @param {Boolean} _async 預設true，設成false的時候會強制同步
+     * @returns {$pcl.log}
+     */
+    _.log.store = function (_async) {
+        if (_log_queue.length === 0) {
+            return this;
+        }
         
         // 1. 先把原本的log_queue丟到store_queue
         var _store_queue = _log_queue;
@@ -166,13 +232,22 @@ $pcl = function (_config) {
             logs: _u.stringify(_store_queue)
         };
         
-        _u.t("_.log.store() 要儲存囉");
-        $.post(_url, _data, function () {
-            _u.t("_.log.store() 完成");
-        });
+        //_u.t("_.log.store() 要儲存囉");
+        if (_async !== false) {
+            $.post(_url, _data);
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: _url,
+                data: _data
+            });
+        }
         
+        return this;
     };
-    
+        
     // -----------------------------------------------------------------
     _.mouse_event = {};
     
@@ -194,22 +269,34 @@ $pcl = function (_config) {
     };
     
     _.mouse_event.move = function (_event) {
-        var _x = _event.pageX;
-        var _y = _event.pageY;
-        var _event_name = "mouse_event_move";
+//        var _x = _event.pageX;
+//        var _y = _event.pageY;
+//        var _event_name = "mouse_event_move";
         _.log.add({
+            event: "mouse_event.move",
             x: _event.pageX,
-            y: _event.pageY,
-            event_name: "mouse_event_move"
+            y: _event.pageY
         });
         return this;
     };
     
     _.mouse_event.click = function (_event) {
+        _.log.add({
+            event: "mouse_event.click",
+            x: _event.pageX,
+            y: _event.pageY,
+            note: _u.get_xpath(_event)
+        });
         return this;
     };
     
     _.mouse_event.dblclick = function (_event) {
+        _.log.add({
+            event: "mouse_event.dblclick",
+            x: _event.pageX,
+            y: _event.pageY,
+            note: _u.get_xpath(_event)
+        });
         return this;
     };
     
@@ -226,19 +313,63 @@ $pcl = function (_config) {
             _.window_event.focus(_event);
         });
         
+        $(window).unload(function (_event) {
+            _.window_event.unload(_event);
+        });
+        
+        $(window).scroll(function () {
+            _.window_event.scroll();
+        });
+        
         return this;
     };
     
     _.window_event.blur = function (_event) {
-        _.log.add("window_event_blur");
+        _.log.add("window_event.blur");
+        _.log.store();
         return this;
     };
     
     _.window_event.focus = function (_event) {
-        _.log.add("window_event_focus");
+        _.log.add("window_event.focus");
         return this;
     };
     
+    _.window_event.unload = function (_event) {
+        _.log.add("window_event.unload");
+        _.log.store(false);
+        return this;
+    };
+    
+    _.window_event.scroll = function () {
+        var _t = $(this);
+        _.log.add({
+            event: "window_event.scroll",
+            x: _t.scrollLeft(),
+            y: _t.scrollTop()
+        });
+        //_u.t("捲動");
+        return this;
+    };
+    
+    // ------------------------------------------------------------------
+    
+    _.key_event = {};
+    
+    _.key_event.init = function () {
+        $(document).keypress(function (_event) {
+            _.key_event.keypress(_event);
+            
+        });
+    };
+    
+    _.key_event.keypress = function (_event) {
+        _.log.add({
+            event: "key_event.keypress",
+            note: _u.get_xpath(_event)
+        });
+        return this;
+    };
     // ------------------------------------------------------------------
     
     var _u = {};
@@ -455,6 +586,21 @@ $pcl = function (_config) {
     
     _u.cookie.delete = function (_key) {
         document.cookie = _key + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    };
+    
+    _u.get_xpath = function ( _element ) {
+        if (typeof(_element.target) === "object") {
+            _element = _element.target;
+        }
+        
+        var _xpath = '';
+        for ( ; _element && _element.nodeType === 1; _element = _element.parentNode )
+        {
+            var id = $(_element.parentNode).children(_element.tagName).index(_element) + 1;
+            id > 1 ? (id = '[' + id + ']') : (id = '');
+            _xpath = '/' + _element.tagName.toLowerCase() + id + _xpath;
+        }
+        return _xpath;
     };
     
     // ------------------------------------------------------------------

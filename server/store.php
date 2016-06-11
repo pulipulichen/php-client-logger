@@ -48,17 +48,27 @@ $profile["http_referer"] = $_SERVER["HTTP_REFERER"];
 $profile_bean = R::findOrCreate("profile", $profile);
 $profile_bean_id = R::store($profile_bean);
 
-exit;
-
 // ----------------------------------------------------------------------
 // 5. 設定log資料
+
+$event_id_mapper = array();
 
 $log_beans = array();
 foreach ($logs AS $key => $log) {
     //$logs[$key]["profile_id"] = $profile_bean_id;
     $bean = R::dispense("log");
     $bean->profile_id = $profile_bean_id;
-    $bean->event_name = $log["event_name"];
+    //$bean->event = $log["event"];
+    $event = $log["event"];
+    if (isset($event_id_mapper[$event]) === FALSE) {
+        $event_bean = R::findOrCreate("event", array("name" => $event) );
+        $event_bean_id = R::store($event_bean);
+        $event_id_mapper[$event] = $event_bean_id;
+    }
+    else {
+        $event_bean_id = $event_id_mapper[$event];
+    }
+    $bean->event_id = $event_bean_id;
     
     if (isset($log["x"]) === FALSE) {
         $log["x"] = NULL;
@@ -71,7 +81,7 @@ foreach ($logs AS $key => $log) {
     $bean->y = $log["y"];
     
     if (isset($log["note"]) === FALSE) {
-        $log["note"] = NULL;
+        $log["note"] = "";
     }
     $bean->note = $log["note"];
     
