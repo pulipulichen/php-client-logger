@@ -1,5 +1,8 @@
 <?php
 
+class log_set {
+    function set($f3) {
+        
 // 1. 檢查參數
 if (isset($_POST) === FALSE 
         || isset($_POST["profile"]) === FALSE 
@@ -18,28 +21,9 @@ if (is_array($profile) === FALSE) {
     $profile = [];
 }
 
-$env_keys = array(
-    'HTTP_CLIENT_IP',
-    'HTTP_X_FORWARDED_FOR',
-    'HTTP_X_FORWARDED',
-    'HTTP_FORWARDED_FOR',
-    'HTTP_FORWARDED',
-    'REMOTE_ADDR'
-);
-
-$profile["client_ip"] = "";
-foreach ($env_keys AS $key) {
-    $ip = getenv($key);
-    if (isset($ip) && $ip !== 0 && $ip !== "::1" && is_null($ip) === FALSE && $ip !== "" && $ip !== FALSE ) {
-        //echo $ip . " / ";
-        $profile["client_ip"] = $ip;
-        break;
-    }
-    //print $ip . " / ";
-}
-
-$profile["user_agent"] = $_SERVER['HTTP_USER_AGENT'];
-$profile["http_referer"] = $_SERVER["HTTP_REFERER"];
+$profile["client_ip"] = javascript_helper::get_client_ip();
+$profile["user_agent"] = javascript_helper::get_user_agent();
+$profile["http_referer"] = javascript_helper::get_http_referer();
 
 // 4. 儲存profile資料
 $profile_bean = R::findOrCreate("profile", $profile);
@@ -95,4 +79,7 @@ if (isset($_POST["aoi_map"])) {
         "map" => $aoi_map
     ));
     R::store($aoi_map_bean);
+}
+
+    }
 }

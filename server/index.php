@@ -20,6 +20,6 @@ R::setup('pgsql:host=' . $f3->get('database')["host"] . ';dbname=' . $f3->get('d
 R::setAutoResolve(TRUE);        //Recommended as of version 4.2
 //
 // ---------------------------------------
-$f3->set('AUTOLOAD','app/');
+$f3->set('AUTOLOAD','app/; helper/');
 
 $f3->run();

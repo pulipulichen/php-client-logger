@@ -244,7 +244,7 @@ $pcl = function (_config) {
         _log_queue = [];
         
         // 3. 準備傳送資料
-        var _url = _config.server + "server/log/save";
+        var _url = _config.server + "server/log/set";
         var _data = {
             profile: _u.stringify(_profile),
             logs: _u.stringify(_store_queue)
