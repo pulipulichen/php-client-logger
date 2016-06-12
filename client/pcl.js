@@ -22,7 +22,7 @@ $pcl = function (_config) {
         /**
          * @type {Boolean} 是否自動開始記錄
          */
-        auto_start_log: true,
+        log_start: true,
         
         /**
          * @type {Number} 偏移天數
@@ -58,7 +58,16 @@ $pcl = function (_config) {
         /**
          * @type {Boolean} 是否啟用鍵盤事件
          */
-        enable_key_event: true
+        enable_key_event: true,
+        
+        enable_aoi_map: true,
+        
+        enable_url_query: true,
+        
+        /**
+         * 偵測停留時間，單位是毫秒
+         */
+        mouse_stay_interval: 1000
     };
     
     var _log_queue = [];
@@ -76,14 +85,14 @@ $pcl = function (_config) {
         _config = _u.setup_config();
         
         _u.load_jquery(function () {
-            _.init_lib(function () {
+            _.init_log_lib(function () {
                 //_u.t("已經讀取完成囉");
 
                 // 開場先把profile設定好
                 //_.set_profile_uuid(_u.create_uuid());
                 _.profile.load();
                 
-                if (_config.auto_start_log === true) {
+                if (_config.log_start === true || _u.query_string.pcl_log_start === "true") {
                     _.start();
                 }
             });
@@ -116,13 +125,13 @@ $pcl = function (_config) {
      * @param {function} _callback
      * @returns {$pcl}
      */
-    _.init_lib = function (_callback) {
+    _.init_log_lib = function (_callback) {
         var _url = _config.server + "client/lib/fingerprint/fingerprint.min.js";
-        $.getScript(_url, function () {
-            _u.trigger_callback(_callback);
-        });
+        _u.load_script(_url, _callback);
         return this;
     };
+    
+    
     
     // ------------------------------------------------------------------
     
@@ -232,6 +241,11 @@ $pcl = function (_config) {
             logs: _u.stringify(_store_queue)
         };
         
+        if (_.aoi_map.stored === false && _config.enable_aoi_map === true) {
+            _data.aoi_map = _u.stringify(_.aoi_map.locate());
+            _.aoi_map.stored = true;
+        }
+        
         //_u.t("_.log.store() 要儲存囉");
         if (_async !== false) {
             $.post(_url, _data);
@@ -255,6 +269,7 @@ $pcl = function (_config) {
         
         $(document).mousemove(function (_event) {
             _.mouse_event.move(_event);
+            _.mouse_event.move_stay(_event);
         });
         
         $(document).click(function (_event) {
@@ -280,13 +295,45 @@ $pcl = function (_config) {
         return this;
     };
     
+    _.mouse_event.move_stay_last_timestamp;
+    _.mouse_event.move_stay_last_log;
+    _.mouse_event.move_stay = function (_event) {
+        var _current_timestamp = _u.get_timestamp();
+        if (_.mouse_event.move_stay_last_timestamp === undefined) {
+            _.mouse_event.move_stay_update(_event, _current_timestamp);
+        } else if (_current_timestamp - _.mouse_event.move_stay_last_timestamp > _config.mouse_stay_interval) {
+            _.log.add(_.mouse_event.move_stay_last_log);
+            _.mouse_event.move_stay_update(_event, _current_timestamp);
+        }
+        return this;
+    };
+    
+    _.mouse_event.move_stay_update = function (_event, _current_timestamp) {
+        var _log = {
+            event: "mouse_event.move_stay",
+            x: _event.pageX,
+            y: _event.pageY
+        };
+        _.mouse_event.move_stay_last_log = _log;
+        _.mouse_event.move_stay_last_timestamp = _current_timestamp;
+        return this;
+    };
+    
+    
     _.mouse_event.click = function (_event) {
-        _.log.add({
+        var _log = {
             event: "mouse_event.click",
             x: _event.pageX,
             y: _event.pageY,
-            note: _u.get_xpath(_event)
-        });
+            xpath: _u.get_xpath(_event)
+        };
+        
+        var _aoi = _u.get_aoi(_event);
+        if (_aoi !== undefined) {
+            _log.aoi = _aoi;
+        }
+        
+        _.log.add(_log);
         return this;
     };
     
@@ -295,8 +342,32 @@ $pcl = function (_config) {
             event: "mouse_event.dblclick",
             x: _event.pageX,
             y: _event.pageY,
-            note: _u.get_xpath(_event)
+            xpath: _u.get_xpath(_event)
         });
+        return this;
+    };
+    
+    // ------------------------------------------------------------------
+    
+    _.key_event = {};
+    
+    _.key_event.init = function () {
+        $(document).keypress(function (_event) {
+            _.key_event.keypress(_event);
+            
+        });
+    };
+    
+    _.key_event.keypress = function (_event) {
+        var _log = {
+            event: "key_event.keypress",
+            note: _event.which
+        };
+        var _xpath = _u.get_xpath(_event);
+        if (_xpath !== "/html/body") {
+            _log.xpath = _xpath;
+        }
+        _.log.add(_log);
         return this;
     };
     
@@ -354,22 +425,35 @@ $pcl = function (_config) {
     
     // ------------------------------------------------------------------
     
-    _.key_event = {};
+    _.aoi_map = {};
     
-    _.key_event.init = function () {
-        $(document).keypress(function (_event) {
-            _.key_event.keypress(_event);
-            
+    _.aoi_map.locate = function () {
+        var _aoi_data = {};
+        
+        // 找尋 [data-pcl-aoi]
+        $("[data-pcl-aoi]").each(function (_index, _element) {
+            _element = $(_element);
+            var _aoi_name = _element.attr("data-pcl-aoi");
+            if (typeof(_aoi_data[_aoi_name]) === "undefined") {
+                _aoi_data[_aoi_name] = [];
+            }
+            var _pos = _u.get_pos(_element);
+            var _width = _element.width();
+            var _height = _element.height();
+            _aoi_data[_aoi_name].push({
+                lt: [_pos.x, _pos.y],  //左上
+                rt: [_pos.x + _width, _pos.y],  //右上
+                lb: [_pos.x, _pos.y + _height],  //左下
+                rb: [_pos.x + _width, _pos.y + _height]  //右下
+            });
         });
+        
+        //_u.t(_aoi_data);
+        return _aoi_data;
     };
     
-    _.key_event.keypress = function (_event) {
-        _.log.add({
-            event: "key_event.keypress",
-            note: _u.get_xpath(_event)
-        });
-        return this;
-    };
+    _.aoi_map.stored = false;
+    
     // ------------------------------------------------------------------
     
     var _u = {};
@@ -601,6 +685,82 @@ $pcl = function (_config) {
             _xpath = '/' + _element.tagName.toLowerCase() + id + _xpath;
         }
         return _xpath;
+    };
+    
+    _u.get_aoi = function (_element) {
+        if (typeof(_element.target) === "object") {
+            _element = _element.target;
+        }
+        
+        var _aoi;
+        var _element = $(_element);
+        if (_element.attr("data-pcl-aoi") !== undefined) {
+            _aoi = $.trim(_element.attr("data-pcl-aoi"));
+            if (_aoi !== "") {
+                return _aoi;
+            }
+        }
+        
+        var _parent_element = _element.parents("[data-pcl-aoi]:first");
+        if (_parent_element.length === 1) {
+            _aoi = $.trim(_parent_element.attr("data-pcl-aoi"));
+            if (_aoi !== "") {
+                return _aoi;
+            }
+        }
+    };
+    
+    _u.get_pos = function(_el) {
+        if (typeof(_el.get) === "function") {
+            _el = _el.get(0);
+        }
+        // yay readability
+        for (var _lx=0, _ly=0;
+             _el !== null;
+             _lx += _el.offsetLeft, _ly += _el.offsetTop, _el = _el.offsetParent);
+        return {x: _lx,y: _ly};
+    };
+    
+    _u.query_string = function () {
+        // This function is anonymous, is executed immediately and 
+        // the return value is assigned to QueryString!
+        var _query_string = {};
+        var _query = window.location.search.substring(1);
+        var _vars = _query.split("&");
+        for (var _i=0;_i<_vars.length;_i++) {
+            var _pair = _vars[_i].split("=");
+                // If first entry with this name
+            if (typeof _query_string[_pair[0]] === "undefined") {
+                _query_string[_pair[0]] = decodeURIComponent(_pair[1]);
+                // If second entry with this name
+            } else if (typeof _query_string[_pair[0]] === "string") {
+                var arr = [ _query_string[_pair[0]],decodeURIComponent(_pair[1]) ];
+                _query_string[_pair[0]] = arr;
+                // If third or later entry with this name
+            } else {
+                 _query_string[_pair[0]].push(decodeURIComponent(_pair[1]));
+            }
+        } 
+        return _query_string;
+    }();
+      
+    _u.load_script = function (_scripts, _callback) {
+        if (typeof(_scripts) === "string") {
+            _scripts = [_scripts];
+        }
+        var _loop = function (_i) {
+            if (_i > _scripts.length || _scripts.length === 0) {
+                _u.trigger_callback(_callback);
+                return;
+            }
+            
+            var _url = _scripts[_i];
+            $.getScript(_url, function () {
+                _i++;
+                _loop(_i);
+            });
+        };
+        _loop(0);
     };
     
     // ------------------------------------------------------------------

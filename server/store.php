@@ -58,6 +58,7 @@ foreach ($logs AS $key => $log) {
     //$logs[$key]["profile_id"] = $profile_bean_id;
     $bean = R::dispense("log");
     $bean->profile_id = $profile_bean_id;
+    $bean->timestamp = $log["timestamp"];
     //$bean->event = $log["event"];
     $event = $log["event"];
     if (isset($event_id_mapper[$event]) === FALSE) {
@@ -70,23 +71,31 @@ foreach ($logs AS $key => $log) {
     }
     $bean->event_id = $event_bean_id;
     
-    if (isset($log["x"]) === FALSE) {
-        $log["x"] = NULL;
-    }
-    $bean->x = $log["x"];
+    $attr_array = array(
+        "x", "y", "xpath", "aoi", "note"
+    );
     
-    if (isset($log["y"]) === FALSE) {
-        $log["y"] = NULL;
+    foreach ($attr_array AS $attr) {
+        if (isset($log[$attr]) === FALSE) {
+            $log[$attr] = NULL;
+        }
+        $bean->$attr = $log[$attr];
     }
-    $bean->y = $log["y"];
-    
-    if (isset($log["note"]) === FALSE) {
-        $log["note"] = "";
-    }
-    $bean->note = $log["note"];
     
     $log_beans[] = $bean;
 }
 
 // 6. 儲存log
 R::storeAll($log_beans);
+
+// ----------------------------------------------------
+// 儲存aoi map
+if (isset($_POST["aoi_map"])) {
+    //$aoi_map = json_decode($_POST["aoi_map"], true);
+    $aoi_map = $_POST["aoi_map"];
+    $aoi_map_bean = R::findOrCreate("aoi_map", array(
+        "http_referer" => $_SERVER["HTTP_REFERER"],
+        "map" => $aoi_map
+    ));
+    R::store($aoi_map_bean);
+}
