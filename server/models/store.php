@@ -1,8 +1,5 @@
 <?php
 
-include_once 'config.php';
-include_once 'lib/redbeanphp/rb.config.php';
-
 // 1. 檢查參數
 if (isset($_POST) === FALSE 
         || isset($_POST["profile"]) === FALSE 
