@@ -1,4 +1,10 @@
-function profile(_) {
+if (typeof(PCL_LIB) === "undefined") {PCL_LIB = [];}
+PCL_LIB.push(function (_) {
+    
+    _.vars.profile = {
+        name: undefined,
+        uuid: undefined
+    };
     
     _.profile = {};
     /**
@@ -42,4 +48,4 @@ function profile(_) {
     };
     
     return this;
-}
+});
