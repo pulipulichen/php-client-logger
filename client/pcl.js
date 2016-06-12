@@ -498,14 +498,8 @@ $pcl = function (_config) {
             _config.server + "client/lib/heatmap/heatmap.min.js"
         ];
         
-        var _styles = [
-            _config.server + "client/lib/heatmap/commons.css"
-        ];
-        
         _u.load_script(_scripts, function () {
-            _u.load_style(_styles, function () {
-                _.view.headmap_display();
-            });
+            _.view.headmap_display();
         });
     };
     
@@ -513,10 +507,10 @@ $pcl = function (_config) {
         
         // create instance
         var heatmapInstance = h337.create({
-          container: document.querySelector('body'),
+          container: document.body,
           radius: 90
         });
-        $("body").click = function(ev) {
+        document.body.onclick = function(ev) {
           heatmapInstance.addData({
             x: ev.layerX,
             y: ev.layerY,
