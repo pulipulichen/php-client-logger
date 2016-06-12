@@ -1,6 +1,11 @@
 <?php
 
 class javascript_helper {
+    
+    static function javascript_header() {
+        header('Content-Type: application/javascript; charset=utf-8');
+    }
+    
     static function json_header() {
         header('Content-Type: application/json; charset=utf-8');
     }

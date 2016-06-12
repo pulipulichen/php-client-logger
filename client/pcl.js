@@ -9,6 +9,17 @@ $pcl = function (_config) {
     var _ = this;
     
     var _default_config = {
+        
+        /**
+         * @type {Boolean} 檢視模式
+         */
+        view_mode: true,
+        
+        /**
+         * @type {Boolean} 是否自動開始記錄
+         */
+        log_start: false,
+        
         /**
          * @type {String} 伺服器的位置
          */
@@ -19,10 +30,6 @@ $pcl = function (_config) {
          */
         log_queue_length: 100,
         
-        /**
-         * @type {Boolean} 是否自動開始記錄
-         */
-        log_start: true,
         
         /**
          * @type {Number} 偏移天數
@@ -67,9 +74,7 @@ $pcl = function (_config) {
         /**
          * 偵測停留時間，單位是毫秒
          */
-        mouse_stay_interval: 1000,
-        
-        view_mode: false
+        mouse_stay_interval: 1000
     };
     
     var _log_queue = [];
@@ -145,46 +150,6 @@ $pcl = function (_config) {
     // ------------------------------------------------------------------
     
     _.profile = {};
-    
-    /**
-     * @param {type} _name
-     * @returns {$pcl}
-     */
-    _.profile.set_name = function (_name) {
-        _.log.store();
-        _profile.name = _name;
-        _u.cookie.set("profile", _profile);
-        _.log.add("profile.set_name", _name);
-        return this;
-    };
-    
-    _.profile.set_default_name = function (_name) {
-        _profile.name = _name;
-        _u.cookie.set("profile", _profile);
-        return this;
-    };
-    
-    _.profile.set_uuid = function (_uuid) {
-        _profile.uuid = _uuid;
-        _u.cookie.set("profile", _profile);
-        return this;
-    };
-    
-    
-    _.profile.load = function () {
-        _profile = _u.cookie.get("profile");
-        if (typeof(_profile) !== "object") {
-            _profile = {};
-        }
-        if (typeof(_profile.uuid) !== "string") {
-            _.profile.set_uuid(_u.create_uuid());
-        }
-        
-        if (typeof(_profile.name) !== "string" && typeof(_config.profile_name) === "string") {
-            _.profile.set_default_name(_config.profile_name);
-        }
-        return this;
-    };
     
     // ---------------------------------------------
     
@@ -509,17 +474,35 @@ $pcl = function (_config) {
     _.view.headmap_display = function () {
         
         // create instance
-        var heatmapInstance = h337.create({
+        var _heatmapInstance = h337.create({
           container: document.body,
           radius: 90
         });
-        document.body.onclick = function(ev) {
-          heatmapInstance.addData({
-            x: ev.layerX,
-            y: ev.layerY,
-            value: 1
-          });
-        };
+//        document.body.onclick = function(ev) {
+//          heatmapInstance.addData({
+//            x: ev.layerX,
+//            y: ev.layerY,
+//            value: 1
+//          });
+//        };
+        var _url = _config.server + "server/log/get/mouse/move_stay/heatmap";
+        $.getJSON(_url, function (_data) {
+            var _data_point_array = {
+                data: []
+            };
+            for (var _i = 0; _i < _data.length; _i++) {
+                _data_point_array.data.push({
+                    x: _data[_i][0],
+                    y: _data[_i][1],
+                    value: 1
+                });
+            }
+            _heatmapInstance.setData(_data_point_array);
+            
+            $(document).click(function () {
+                _heatmapInstance.setData({data: []});
+            });
+        });
     };
     
     // ------------------------------------------------------------------
