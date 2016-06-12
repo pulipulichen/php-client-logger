@@ -86,13 +86,15 @@ $pcl = function (_config) {
         
         _u.load_jquery(function () {
             _.init_log_lib(function () {
-                //_u.t("已經讀取完成囉");
+                
 
                 // 開場先把profile設定好
                 //_.set_profile_uuid(_u.create_uuid());
                 _.profile.load();
                 
-                if (_config.log_start === true || _u.query_string.pcl_log_start === "true") {
+                if (_config.log_start === true 
+                        || _u.query_string.pcl_log_start === "true") {
+                    _u.t("已經讀取完成囉");
                     _.start();
                 }
             });
@@ -352,9 +354,13 @@ $pcl = function (_config) {
     _.key_event = {};
     
     _.key_event.init = function () {
-        $(document).keypress(function (_event) {
-            _.key_event.keypress(_event);
-            
+        // 用change就好啦，不要用keypress啦
+        //$(document).keypress(function (_event) {
+        //    _.key_event.keypress(_event);
+        //});
+        
+        $("input, textarea").change(function(_event) {
+            _.key_event.form_onchange(_event);
         });
     };
     
@@ -367,6 +373,29 @@ $pcl = function (_config) {
         if (_xpath !== "/html/body") {
             _log.xpath = _xpath;
         }
+        _.log.add(_log);
+        return this;
+    };
+    
+    _.key_event.form_onchange = function (_event) {
+        var _log = {
+            event: "key_event.form_onchange",
+            xpath: _u.get_xpath(_event)
+        };
+        var _note = {};
+        var _element = $(_event.target);
+        
+        var _name = _element.attr("name");
+        if (_name !== undefined) {
+            _note.name = _name;
+        }
+        _note.value = _element.val();
+        
+        var _type = _element.attr("type");
+        if (_type === "checkbox" || _type === "radio") {
+            _note.checked = _element.attr("checked");
+        }
+        _log.note = _note;
         _.log.add(_log);
         return this;
     };
@@ -748,19 +777,23 @@ $pcl = function (_config) {
         if (typeof(_scripts) === "string") {
             _scripts = [_scripts];
         }
+        //_u.t("如何？");
         var _loop = function (_i) {
-            if (_i > _scripts.length || _scripts.length === 0) {
+            if (_i === _scripts.length) {
+                //_u.t("跳出囉");
                 _u.trigger_callback(_callback);
                 return;
             }
             
             var _url = _scripts[_i];
+            //_u.t(_url);
             $.getScript(_url, function () {
                 _i++;
                 _loop(_i);
             });
         };
         _loop(0);
+        return this;
     };
     
     // ------------------------------------------------------------------
