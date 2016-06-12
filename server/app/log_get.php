@@ -8,13 +8,30 @@ class log_get {
         }
         //echo $referer;
         
-        $beans = R::getAll('SELECT x, y FROM log JOIN profile ON (log.profile_id = profile.id) JOIN event ON (log.event_id = event.id) '
-                . 'WHERE profile.http_referer = :referer AND event.name = :event_name '
-                . 'ORDER BY timestamp ASC',
-            [
-                ":referer" => $referer,
-                ":event_name" => "mouse_event.move_stay"
-                ]
+        $select_sql = 'SELECT x, y FROM log JOIN profile ON (log.profile_id = profile.id) JOIN event ON (log.event_id = event.id) ';
+        $where_sql = 'WHERE profile.http_referer = :referer AND event.name = :event_name ';
+        $order_sql = 'ORDER BY timestamp ASC';
+        $parameters = [
+            ":referer" => $referer,
+            ":event_name" => "mouse_event.move_stay"
+        ];
+        
+        // ---------------------------------
+        // 如果有filter的話
+        $uuid = array("aCs$-g", "aaa");
+        //if (isset($_POST["uuid"])) {
+            $where_sql .= " AND profile.uuid IN (:uuid) ";
+            //$parameters[":uuid"] = "(" . $_POST["uuid"] . ")";
+            $parameters[":uuid"] = $uuid;
+        //}
+            
+        // ---------------------------------
+        // 開始查詢
+        
+        $beans = R::getAll($select_sql . " "
+                . $where_sql . " "
+                . $order_sql,
+            $parameters
         );
         
         $data = [];

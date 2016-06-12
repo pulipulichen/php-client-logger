@@ -115,7 +115,7 @@ PCL_LIB.push(function (_) {
      * @returns {String|$pcl._.u.int_to_letters._code}
      */
     _.u.int_to_letters = function (_int) {
-        var _code = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*'()".split("");
+        var _code = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$-_.+!*()".split("");
         //$.console_trace(_code.length);  // 72
         // 72*72 = 5184
         var _output = "";
