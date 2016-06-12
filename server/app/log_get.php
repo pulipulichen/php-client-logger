@@ -23,11 +23,29 @@ class log_get {
         );
         
         // --------------------------------------------------------
+        //$_POST["uuid"] = "aaa,bbb";
         if (isset($_POST["uuid"])) {
             $uuid = explode(",", $_POST["uuid"]);
             $where_sql .= " AND " . database_helper::in_clauses_builder("uuid", $uuid, $parameters);
         }
         
+        if (isset($_POST["profile_name"])) {
+            $profile_name = explode(",", $_POST["profile_name"]);
+            $where_sql .= " AND " . database_helper::in_clauses_builder("profile_name", $profile_name, $parameters);
+        }
+
+        //$_POST["max_timestamp"] = "1465700294827";
+        if (isset($_POST["max_timestamp"])) {
+            $max_timestamp = string_helper::bigintval($_POST["max_timestamp"]);
+            $where_sql .= " AND timestamp < :max_timestamp";
+            $parameters[":max_timestamp"] = $max_timestamp;
+        }
+        
+        if (isset($_POST["min_timestamp"])) {
+            $min_timestamp = string_helper::bigintval($_POST["min_timestamp"]);
+            $where_sql .= " AND timestamp > :min_timestamp";
+            $parameters[":min_timestamp"] = $min_timestamp;
+        }
         
         
         // --------------------------------------------------------

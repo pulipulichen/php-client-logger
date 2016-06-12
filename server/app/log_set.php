@@ -21,6 +21,10 @@ if (is_array($profile) === FALSE) {
     $profile = [];
 }
 
+if (isset($profile["profile_name"]) === FALSE) {
+    $profile["profile_name"] = "";
+}
+
 $profile["client_ip"] = javascript_helper::get_client_ip();
 $profile["user_agent"] = javascript_helper::get_user_agent();
 $profile["http_referer"] = javascript_helper::get_http_referer();
@@ -43,7 +47,7 @@ foreach ($logs AS $key => $log) {
     //$bean->event = $log["event"];
     $event = $log["event"];
     if (isset($event_id_mapper[$event]) === FALSE) {
-        $event_bean = R::findOrCreate("event", array("name" => $event) );
+        $event_bean = R::findOrCreate("event", array("event_name" => $event) );
         $event_bean_id = R::store($event_bean);
         $event_id_mapper[$event] = $event_bean_id;
     }

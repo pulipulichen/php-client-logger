@@ -7,13 +7,18 @@ PCL_LIB.push(function (_) {
          * @type {Boolean} 檢視模式
          * ?pcl_view_mode=true
          */
-        view_mode: true,
+        view_mode: false,
         
         /**
          * @type {Boolean} 是否自動開始記錄
          * ?pcl_log_start=true
          */
-        log_start: false,
+        log_start: true,
+        
+        /**
+         * @type {Boolean} 自動跳出來設定profile_name
+         */
+        auto_prompt_profile_name: true,
         
         /**
          * @type {String} 伺服器的位置

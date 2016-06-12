@@ -3,7 +3,7 @@ class database_helper {
     static function view_init($f3) {
         $config = R::findOne('config', 'key = ?', ['view_init']);
         if (isset($config) === FALSE) {
-            $views = $f3->get("database")["view"];
+            $views = $f3->get("database_view");
             if (is_array($views)) {
                 foreach ($views AS $view) {
                     //echo $view;

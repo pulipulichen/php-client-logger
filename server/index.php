@@ -22,6 +22,6 @@ R::setAutoResolve(TRUE);        //Recommended as of version 4.2
 $f3->db=new \DB\SQL('pgsql:host=' . $f3->get('database')["host"] . ';dbname=' . $f3->get('database')["dbname"], $f3->get('database')["username"], $f3->get('database')["password"]);
 
 // ---------------------------------------
-$f3->set('AUTOLOAD','app/; helper/');
+$f3->set('AUTOLOAD','app/; helper/; config/');
 
 $f3->run();
