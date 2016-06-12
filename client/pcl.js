@@ -22,7 +22,7 @@ $pcl = function (_config) {
         /**
          * @type {Boolean} 是否自動開始記錄
          */
-        log_start: true,
+        log_start: false,
         
         /**
          * @type {Number} 偏移天數
@@ -67,7 +67,9 @@ $pcl = function (_config) {
         /**
          * 偵測停留時間，單位是毫秒
          */
-        mouse_stay_interval: 1000
+        mouse_stay_interval: 1000,
+        
+        view_mode: true
     };
     
     var _log_queue = [];
@@ -94,9 +96,11 @@ $pcl = function (_config) {
                 
                 if (_config.log_start === true 
                         || _u.query_string.pcl_log_start === "true") {
-                    _u.t("已經讀取完成囉");
+                    //_u.t("已經讀取完成囉");
                     _.start();
                 }
+                
+                _.view.start();
             });
         });
         return this;
@@ -484,6 +488,45 @@ $pcl = function (_config) {
     _.aoi_map.stored = false;
     
     // ------------------------------------------------------------------
+    // 檢視模式
+    
+    _.view = {};
+    
+    _.view.start = function () {
+        
+        var _scripts = [
+            _config.server + "client/lib/heatmap/heatmap.min.js"
+        ];
+        
+        var _styles = [
+            _config.server + "client/lib/heatmap/commons.css"
+        ];
+        
+        _u.load_script(_scripts, function () {
+            _u.load_style(_styles, function () {
+                _.view.headmap_display();
+            });
+        });
+    };
+    
+    _.view.headmap_display = function () {
+        
+        // create instance
+        var heatmapInstance = h337.create({
+          container: document.querySelector('body'),
+          radius: 90
+        });
+        $("body").click = function(ev) {
+          heatmapInstance.addData({
+            x: ev.layerX,
+            y: ev.layerY,
+            value: 1
+          });
+        };
+    };
+    
+    // ------------------------------------------------------------------
+    // 工具模式
     
     var _u = {};
     
@@ -794,6 +837,17 @@ $pcl = function (_config) {
         };
         _loop(0);
         return this;
+    };
+    
+    _u.load_style = function (_styles, _callback) {
+        if (typeof(_styles) === "string") {
+            _styles = [_styles];
+        }
+        for (var _i = 0; _i < _styles.length; _i++) {
+            var _url = _styles[_i];
+            $('<link rel="stylesheet" type="text/css" href="' + _url + '">').appendTo("head");
+        }
+        _u.trigger_callback(_callback);
     };
     
     // ------------------------------------------------------------------
