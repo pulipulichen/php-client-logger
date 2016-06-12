@@ -22,7 +22,7 @@ $pcl = function (_config) {
         /**
          * @type {Boolean} 是否自動開始記錄
          */
-        log_start: false,
+        log_start: true,
         
         /**
          * @type {Number} 偏移天數
@@ -69,7 +69,7 @@ $pcl = function (_config) {
          */
         mouse_stay_interval: 1000,
         
-        view_mode: true
+        view_mode: false
     };
     
     var _log_queue = [];
@@ -100,7 +100,10 @@ $pcl = function (_config) {
                     _.start();
                 }
                 
-                _.view.start();
+                if (_config.view_mode === true 
+                        || _u.query_string.pcl_view === "true") {
+                    _.view.start();
+                }
             });
         });
         return this;
@@ -241,7 +244,7 @@ $pcl = function (_config) {
         _log_queue = [];
         
         // 3. 準備傳送資料
-        var _url = _config.server + "server/store.php";
+        var _url = _config.server + "server/log/save";
         var _data = {
             profile: _u.stringify(_profile),
             logs: _u.stringify(_store_queue)

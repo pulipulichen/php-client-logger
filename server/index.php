@@ -4,84 +4,22 @@
 $f3=require('lib/base.php');
 
 $f3->set('DEBUG',1);
-if ((float)PCRE_VERSION<7.9)
+if ((float)PCRE_VERSION<7.9) {
 	trigger_error('PCRE version is out of date');
+}
 
 // Load configuration
 $f3->config('config.ini');
 
-$CONFIG = parse_ini_file("config.ini");
-include_once 'lib/redbeanphp/rb.config.php';
-
 // ---------------------------------------
+// 資料庫：RedBeanPHP使用
+include_once 'lib/redbeanphp/rb.php';
 
-$f3->route('GET /f3',
-	function($f3) {
-		$classes=array(
-			'Base'=>
-				array(
-					'hash',
-					'json',
-					'session'
-				),
-			'Cache'=>
-				array(
-					'apc',
-					'memcache',
-					'wincache',
-					'xcache'
-				),
-			'DB\SQL'=>
-				array(
-					'pdo',
-					'pdo_dblib',
-					'pdo_mssql',
-					'pdo_mysql',
-					'pdo_odbc',
-					'pdo_pgsql',
-					'pdo_sqlite',
-					'pdo_sqlsrv'
-				),
-			'DB\Jig'=>
-				array('json'),
-			'DB\Mongo'=>
-				array(
-					'json',
-					'mongo'
-				),
-			'Auth'=>
-				array('ldap','pdo'),
-			'Bcrypt'=>
-				array(
-					'mcrypt',
-					'openssl'
-				),
-			'Image'=>
-				array('gd'),
-			'Lexicon'=>
-				array('iconv'),
-			'SMTP'=>
-				array('openssl'),
-			'Web'=>
-				array('curl','openssl','simplexml'),
-			'Web\Geo'=>
-				array('geoip','json'),
-			'Web\OpenID'=>
-				array('json','simplexml'),
-			'Web\Pingback'=>
-				array('dom','xmlrpc')
-		);
-		$f3->set('classes',$classes);
-		$f3->set('content','welcome.htm');
-		echo View::instance()->render('layout.htm');
-	}
-);
-
-$f3->route('GET /userref',
-	function($f3) {
-		$f3->set('content','userref.htm');
-		echo View::instance()->render('layout.htm');
-	}
-);
+// RedBeanPHP連接方式說明 http://www.redbeanphp.com/index.php?p=/connection
+R::setup('pgsql:host=' . $f3->get('database')["host"] . ';dbname=' . $f3->get('database')["dbname"], $f3->get('database')["username"], $f3->get('database')["password"]);
+R::setAutoResolve(TRUE);        //Recommended as of version 4.2
+//
+// ---------------------------------------
+$f3->set('AUTOLOAD','app/');
 
 $f3->run();
