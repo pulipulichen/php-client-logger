@@ -28,8 +28,23 @@ class javascript_helper {
         return time() * 1000;
     }
     
+    /**
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 
+     * 20160612 修正控制參數的問題
+     * @return type
+     */
     static function get_http_referer() {
-        return $_SERVER["HTTP_REFERER"];
+        $referer = $_SERVER["HTTP_REFERER"];
+        
+        $referer = str_replace("pcl_log_start=true", "", $referer);
+        $referer = str_replace("pcl_log_start=false", "", $referer);
+        $referer = str_replace("pcl_view_mode=true", "", $referer);
+        $referer = str_replace("pcl_view_mode=false", "", $referer);
+        
+        while (string_helper::ends_with($referer, "?")) {
+            $referer = substr($referer, 0, strlen($referer)-1);
+        }
+        return $referer;
     }
     
     static function get_user_agent() {

@@ -5,11 +5,13 @@ PCL_LIB.push(function (_) {
         
         /**
          * @type {Boolean} 檢視模式
+         * ?pcl_view_mode=true
          */
         view_mode: true,
         
         /**
          * @type {Boolean} 是否自動開始記錄
+         * ?pcl_log_start=true
          */
         log_start: false,
         

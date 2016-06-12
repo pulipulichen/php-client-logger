@@ -1,38 +1,42 @@
 <?php
 
 class log_get {
-    function mouse_move_stay_heatmap() {
-        $referer = javascript_helper::get_http_referer();
+    function mouse_move_stay_heatmap($f3) {
+        
+        database_helper::view_init($f3);
+        
+        //$referer = javascript_helper::get_http_referer();
+        
+        // 測試用
         if ($referer === null) {
             $referer = "http://localhost/php-client-logger/demo/";
         }
         //echo $referer;
         
-        $select_sql = 'SELECT x, y FROM log JOIN profile ON (log.profile_id = profile.id) JOIN event ON (log.event_id = event.id) ';
-        $where_sql = 'WHERE profile.http_referer = :referer AND event.name = :event_name ';
-        $order_sql = 'ORDER BY timestamp ASC';
-        $parameters = [
-            ":referer" => $referer,
-            ":event_name" => "mouse_event.move_stay"
-        ];
+        // -----------------------------------------------------
+        // 基本查詢資料
         
-        // ---------------------------------
-        // 如果有filter的話
-        $uuid = array("aCs$-g", "aaa");
-        //if (isset($_POST["uuid"])) {
-            $where_sql .= " AND profile.uuid IN (:uuid) ";
-            //$parameters[":uuid"] = "(" . $_POST["uuid"] . ")";
-            $parameters[":uuid"] = $uuid;
-        //}
-            
-        // ---------------------------------
+        $where_sql = "http_referer = :http_referer AND name = :name";
+        $parameters = array(
+            ":http_referer" => $referer,
+            ":name" => "mouse_event.move_stay"
+        );
+        
+        // --------------------------------------------------------
+        if (isset($_POST["uuid"])) {
+            $uuid = explode(",", $_POST["uuid"]);
+            $where_sql .= " AND " . database_helper::in_clauses_builder("uuid", $uuid, $parameters);
+        }
+        
+        
+        
+        // --------------------------------------------------------
         // 開始查詢
         
-        $beans = R::getAll($select_sql . " "
-                . $where_sql . " "
-                . $order_sql,
-            $parameters
-        );
+        $beans = R::getAll("SELECT x, y FROM log_full WHERE " . $where_sql,  $parameters);
+        
+        // ----------------------------
+        // 輸出資料
         
         $data = [];
         foreach ($beans AS $bean) {
