@@ -19,7 +19,7 @@ PCL_LIB.push(function (_) {
         
         var _url = _.config.server + "server/log/get/mouse/move_stay/heatmap";
         
-        setInterval(function () {
+        var _loop = function () {
             var _data = {};
             if (_last_timestamp !== undefined) {
                 _data.min_timestamp = _last_timestamp;
@@ -27,6 +27,7 @@ PCL_LIB.push(function (_) {
             
             $.getJSON(_url, _data, function (_data) {
                 var _data_point_array = {
+                    max: 5,
                     data: []
                 };
                 for (var _i = 0; _i < _data.length; _i++) {
@@ -44,8 +45,14 @@ PCL_LIB.push(function (_) {
                 //});
                 
                 _last_timestamp = _.u.get_timestamp() - 30000;
+                
+                setTimeout(function () {
+                    _loop();
+                }, 1000);
             });
-        }, 1000);
+        };
+        _loop();
+        //}, 1000);
             
     };
     

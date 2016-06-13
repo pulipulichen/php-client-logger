@@ -71,6 +71,6 @@ class javascript_helper {
             }
             //print $ip . " / ";
         }
-        return null;
+        return "";
     }
 }

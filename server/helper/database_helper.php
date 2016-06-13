@@ -13,7 +13,7 @@ class database_helper {
 
     static function view_init($f3) {
         $config = R::findOne('config', 'key = ?', ['view_init']);
-        if (isset($config) === FALSE) {
+        if (isset($config) === FALSE || true) {
             //echo 1212;
             $views = database_helper::view_config();
             //print_r($views);
@@ -30,7 +30,7 @@ class database_helper {
                 $config = R::dispense('config');
                 $config->key = "view_init";
                 $config->value = true;
-                //R::store($config);
+                R::store($config);
             }
         }
     }
