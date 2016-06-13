@@ -5,44 +5,50 @@ class log_get {
         
         database_helper::view_init($f3);
         
-        //$referer = javascript_helper::get_http_referer();
+        $referer = javascript_helper::get_http_referer();
         
         // 測試用
-        if ($referer === null) {
-            $referer = "http://localhost/php-client-logger/demo/";
-        }
+        //$referer = "http://localhost/php-client-logger/demo/";
         //echo $referer;
         
         // -----------------------------------------------------
         // 基本查詢資料
         
-        $where_sql = "http_referer = :http_referer AND name = :name";
+        $where_sql = "http_referer = :http_referer AND event_name = :event_name";
         $parameters = array(
             ":http_referer" => $referer,
-            ":name" => "mouse_event.move_stay"
+            //":name" => "mouse_event.move_stay"
+            ":event_name" => "mouse_event.move"
         );
         
         // --------------------------------------------------------
         //$_POST["uuid"] = "aaa,bbb";
-        if (isset($_POST["uuid"])) {
-            $uuid = explode(",", $_POST["uuid"]);
+        if (isset($_GET["uuid"])) {
+            $uuid = explode(",", $_GET["uuid"]);
             $where_sql .= " AND " . database_helper::in_clauses_builder("uuid", $uuid, $parameters);
         }
         
-        if (isset($_POST["profile_name"])) {
-            $profile_name = explode(",", $_POST["profile_name"]);
+        if (isset($_GET["profile_name"])) {
+            $profile_name = explode(",", $_GET["profile_name"]);
             $where_sql .= " AND " . database_helper::in_clauses_builder("profile_name", $profile_name, $parameters);
         }
 
         //$_POST["max_timestamp"] = "1465700294827";
-        if (isset($_POST["max_timestamp"])) {
-            $max_timestamp = string_helper::bigintval($_POST["max_timestamp"]);
+        if (isset($_GET["max_timestamp"])) {
+            $max_timestamp = string_helper::bigintval($_GET["max_timestamp"]);
             $where_sql .= " AND timestamp < :max_timestamp";
             $parameters[":max_timestamp"] = $max_timestamp;
         }
         
-        if (isset($_POST["min_timestamp"])) {
-            $min_timestamp = string_helper::bigintval($_POST["min_timestamp"]);
+        if (isset($_GET["min_timestamp"])) {
+            $min_timestamp = string_helper::bigintval($_GET["min_timestamp"]);
+            $where_sql .= " AND timestamp > :min_timestamp";
+            $parameters[":min_timestamp"] = $min_timestamp;
+        }
+        
+        if (isset($_GET["min_timestamp"]) === FALSE) {
+            $_GET["min_timestamp"] = javascript_helper::get_javascript_time() - 30000;
+            $min_timestamp = string_helper::bigintval($_GET["min_timestamp"]);
             $where_sql .= " AND timestamp > :min_timestamp";
             $parameters[":min_timestamp"] = $min_timestamp;
         }
@@ -52,6 +58,10 @@ class log_get {
         // 開始查詢
         
         $beans = R::getAll("SELECT x, y FROM log_full WHERE " . $where_sql,  $parameters);
+        
+        //echo "SELECT x, y FROM log_full WHERE " . $where_sql;
+        //print_r($parameters);
+        //echo count($beans);
         
         // ----------------------------
         // 輸出資料

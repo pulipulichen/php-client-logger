@@ -7,7 +7,7 @@ PCL_LIB.push(function (_) {
          * @type {Boolean} 檢視模式
          * ?pcl_view_mode=true
          */
-        view_mode: false,
+        view_mode: true,
         
         /**
          * @type {Boolean} 是否自動開始記錄
@@ -28,7 +28,7 @@ PCL_LIB.push(function (_) {
         /**
          * @type {Number} 要儲存的資料量
          */
-        log_queue_length: 100,
+        log_queue_length: 10,
         
         
         /**
