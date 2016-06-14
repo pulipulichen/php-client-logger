@@ -62,7 +62,12 @@ foreach ($logs AS $key => $log) {
     
     foreach ($attr_array AS $attr) {
         if (isset($log[$attr]) === FALSE) {
-            $log[$attr] = NULL;
+            if ($attr === "x" || $attr === "y") {
+                $log[$attr] = NULL;
+            }
+            else {
+                $log[$attr] = "";
+            }
         }
         $bean->$attr = $log[$attr];
     }

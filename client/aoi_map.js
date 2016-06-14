@@ -2,11 +2,13 @@ if (typeof(PCL_LIB) === "undefined") {PCL_LIB = [];}
 PCL_LIB.push(function (_) {
     _.aoi_map = {};
     
+    _.aoi_map.attr_name = "[data-pcl-aoi]";
+    
     _.aoi_map.locate = function () {
         var _aoi_data = {};
         
         // 找尋 [data-pcl-aoi]
-        $("[data-pcl-aoi]").each(function (_index, _element) {
+        $(_.aoi_map.attr_name).each(function (_index, _element) {
             _element = $(_element);
             var _aoi_name = _element.attr("data-pcl-aoi");
             if (typeof(_aoi_data[_aoi_name]) === "undefined") {
@@ -28,4 +30,25 @@ PCL_LIB.push(function (_) {
     };
     
     _.aoi_map.stored = false;
+    
+    // ---------------------------------------
+    
+    _.aoi_map.init = function () {
+        $(_.aoi_map.attr_name).hover(function (_event) {
+            _.aoi_map.mouseenter(_event);
+        }, function (_event) {
+            _.aoi_map.mouseleave(_event);
+        });
+    };
+    
+    _.aoi_map.mouseenter = function (_event) {
+        _.log.add(_.u.create_mouse_log(_event, "aoi_map.mouseenter"));
+        return this;
+    };
+    
+    _.aoi_map.mouseleave = function (_event) {
+        _.log.add(_.u.create_mouse_log(_event, "aoi_map.mouseleave"));
+        return this;
+    };
+    
 });

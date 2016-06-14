@@ -323,4 +323,20 @@ PCL_LIB.push(function (_) {
         _.u.trigger_callback(_callback);
     };
     
+    _.u.create_mouse_log = function (_event, _event_name) {
+        var _log = {
+            event: _event_name,
+            x: _event.pageX,
+            y: _event.pageY,
+            xpath: _.u.get_xpath(_event)
+        };
+        
+        var _aoi = _.u.get_aoi(_event);
+        if (_aoi !== undefined) {
+            _log.aoi = _aoi;
+        }
+        
+        return _log;
+    };
+    
 }); //PCL_LIB.push(function (_) {

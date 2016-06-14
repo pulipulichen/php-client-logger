@@ -10,9 +10,15 @@ PCL_LIB.push(function (_) {
             _.config.server + "client/lib/heatmap/heatmap.min.js"
         ];
         
+        var _styles = [
+            _.config.server + "client/lib/heatmap/heatmap.css"
+        ];
+        
         _.u.load_script(_scripts, function () {
-            _.view_headmap.init();
-            _.view_headmap.display();
+            _.u.load_style(_styles, function () {
+                _.view_headmap.init();
+                _.view_headmap.display();
+            });
         });
     };
 });

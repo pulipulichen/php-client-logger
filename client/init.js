@@ -31,6 +31,7 @@ PCL_LIB.push(function (_) {
         _.log.add("start");
         if (_.config.enable_mouse_event === true) {
             _.mouse_event.init();
+            _.aoi_map.init();
         }
         if (_.config.enable_window_event === true) {
             _.window_event.init();
