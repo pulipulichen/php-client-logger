@@ -1,21 +1,11 @@
 <?php
 class database_helper {
-    static function view_config() {
-        $view = [];
-        $view[] = "CREATE VIEW log_full AS 
-        SELECT profile.uuid, profile.profile_name, profile.client_ip, profile.user_agent, profile.http_referer, event.event_name, 
-        log.timestamp, log.x, log.y, log.xpath, log.aoi, log.note 
-        FROM log JOIN profile ON (log.profile_id = profile.id) JOIN event ON (log.event_id = event.id) 
-        ORDER BY timestamp ASC";
-        return $view;
-    }
-
 
     static function view_init($f3) {
         $config = R::findOne('config', 'key = ?', ['view_init']);
         if (isset($config) === FALSE || true) {
             //echo 1212;
-            $views = database_helper::view_config();
+            $views = $f3->get("database")["view"];
             //print_r($views);
             if (is_array($views)) {
                 foreach ($views AS $view) {

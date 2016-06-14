@@ -5,10 +5,10 @@ class pcl_client {
         
         $script = "";
         //echo file_get_contents("../client/pcl.js");
-        $files = scandir("../client");
+        $files = scandir("client");
         foreach ($files AS $file) {
             if (string_helper::ends_with($file, ".js")) {
-                $script .= file_get_contents("../client/" . $file);
+                $script .= file_get_contents("client/" . $file);
             }
         }
         echo $script;
