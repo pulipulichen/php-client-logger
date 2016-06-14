@@ -59,7 +59,7 @@ PCL_LIB.push(function (_) {
         _.vars.log_queue = [];
         
         // 3. 準備傳送資料
-        var _url = _.config.server + "server/log/set";
+        var _url = _.config.server + "log/set";
         var _data = {
             profile: _.u.stringify(_.vars.profile),
             logs: _.u.stringify(_store_queue)

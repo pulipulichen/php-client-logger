@@ -17,7 +17,7 @@ PCL_LIB.push(function (_) {
         
         var _last_timestamp;
         
-        var _url = _.config.server + "server/log/get/mouse/move_stay/heatmap";
+        var _url = _.config.server + "log/get/mouse/move_stay/heatmap";
         
         var _loop = function () {
             var _data = {};

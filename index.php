@@ -9,8 +9,9 @@ if ((float)PCRE_VERSION<7.9) {
 }
 
 // Load configuration
-//$f3->config('config.ini');
-include("config.php");
+$f3->config('config/f3.ini');
+include("config/route.php");
+include("config/database.php");
 
 // ---------------------------------------
 // 資料庫：RedBeanPHP使用
