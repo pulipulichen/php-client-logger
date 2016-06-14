@@ -16,6 +16,11 @@ body {
 }
 </style>
 
+
+<script type="text/javascript" src="/php-client-logger/pcl.js"></script>
+<script type="text/javascript">
+    PCL = $pcl();
+</script>
 <script type="text/javascript">
 /*
 	########  ##       ##     ## ########
@@ -29,7 +34,7 @@ body {
 $(document).ready(function(){
 	
 	var _log_add_blur = function(_event_name, _event) {
-		console.log(_event_name);
+            PCL.log.add(_event_name);
 	};
 	var _blur_timer;
 	var _blur_enable = false;
@@ -380,5 +385,7 @@ label{
 		</div>
 	</div>
 </div>
+
+
 </body>
 </html>
