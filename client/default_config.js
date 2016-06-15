@@ -74,6 +74,11 @@ PCL_LIB.push(function (_) {
         /**
          * 偵測停留時間，單位是毫秒
          */
-        mouse_stay_interval: 1000
+        mouse_stay_interval: 1000,
+        
+        /**
+         * 將元素的ID設為aoi
+         */
+        id_as_aoi: true
     };
 });

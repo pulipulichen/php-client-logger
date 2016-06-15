@@ -29,11 +29,29 @@ PCL_LIB.push(function (_) {
         return _aoi_data;
     };
     
+    /**
+     * 將ID設為aoi
+     * @returns {aoi_map_L2._.aoi_map}
+     */
+    _.aoi_map.set_id_as_aoi = function () {
+        $("[id]").each(function (_index, _element) {
+            $(_element).attr("data-pcl-aoi", _element.id);
+        });
+        return this;
+    };
+    
     _.aoi_map.stored = false;
     
     // ---------------------------------------
     
     _.aoi_map.init = function () {
+        
+        if (_.config.id_as_aoi === true) {
+            _.aoi_map.set_id_as_aoi();
+        }
+        
+        _.u.t($(_.aoi_map.attr_name).length);
+        
         $(_.aoi_map.attr_name).hover(function (_event) {
             _.aoi_map.mouseenter(_event);
         }, function (_event) {
