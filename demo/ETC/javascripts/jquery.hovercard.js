@@ -185,6 +185,7 @@
                 }
 
             }, function () {
+                return;
                 //Undo the z indices 
                 $this = $(this);
 

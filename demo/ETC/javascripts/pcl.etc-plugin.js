@@ -19,7 +19,7 @@ PCL.hovercard.on_hover_in = function (_delay_time, _trigger) {
             xpath: PCL.u.get_xpath(_trigger),
             aoi: _aoi
         };
-        PCL.log.add(_log);
+        //PCL.log.add(_log);
         PCL.u.interval_timer.set("etc.hovercard.on_hover", _aoi);
         PCL.hovercard._last_aoi = _aoi;
     }, _delay_time);
@@ -38,7 +38,7 @@ PCL.hovercard.on_hover_out = function (_delay_time, _trigger) {
     
     _log.note = PCL.u.interval_timer.get("etc.hovercard.on_hover", _aoi) + "";
 
-    PCL.log.add(_log);
+    //PCL.log.add(_log);
     return this;
 };
 
@@ -58,7 +58,7 @@ PCL.blur.mouseover = function (_event) {
             _log.aoi = PCL.blur._last_aoi;
             PCL.u.interval_timer.set("etc.blur", _log.aoi);
         }
-        PCL.log.add(_log);
+        //PCL.log.add(_log);
         PCL.blur._enabled = true;
         
     }, 6000);
@@ -74,6 +74,6 @@ PCL.blur.mouseleave = function (_event) {
     _log.aoi = PCL.blur._last_aoi;
     _log.note = PCL.u.interval_timer.get("etc.blur", _log.aoi) + "";
     PCL.blur._last_aoi = undefined;
-    PCL.log.add(_log);
+    //PCL.log.add(_log);
     PCL.blur._enabled = false;
 };

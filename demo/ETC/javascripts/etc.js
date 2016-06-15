@@ -7,44 +7,45 @@
 	##     ## ##       ##     ## ##    ##
 	########  ########  #######  ##     ##
 */
-$(document).ready(function(){
-	
-	var _log_add_blur = function(_event_name, _event) {
-            PCL.log.add(_event_name);
-	};
-	var _blur_timer;
-	var _blur_enable = false;
-	
-	// ---------------------
-
-	var _set_event = function() {
-		var _selector = ".hc-preview";
-		$("label").mouseover(function (_event) {
-			$("span").addClass("blur");
-			$("label").not(this).addClass("blur");
-			
-			//--------------------------------------------
-			PCL.blur.mouseover(_event);
-			//--------------------------------------------
-		});
-
-		$(".hc-preview").mouseleave(function(_event) {
-			$("span").removeClass("blur");
-			$("label").not(this).removeClass("blur");
-			
-			//--------------------------------------------
-			PCL.blur.mouseleave(_event);
-			//--------------------------------------------
-		});
-	};
-	if ($(".hc-preview").length > 0) {
-		_set_event();
-	}
-	else {
-		setTimeout(function () {
-			_set_event();
-		}, 500);
-	}
+//$(document).ready(function(){
+//	
+//	var _log_add_blur = function(_event_name, _event) {
+//            PCL.log.add(_event_name);
+//	};
+//	var _blur_timer;
+//	var _blur_enable = false;
+//	
+//	// ---------------------
+//
+//	var _set_event = function() {
+//		var _selector = ".hc-preview";
+//		$("label").mouseover(function (_event) {
+//			$("span").addClass("blur");
+//			$("label").not(this).addClass("blur");
+//			
+//			//--------------------------------------------
+//			PCL.blur.mouseover(_event);
+//			//--------------------------------------------
+//		});
+//
+//		$(".hc-preview").mouseleave(function(_event) {
+//			$("span").removeClass("blur");
+//			$("label").not(this).removeClass("blur");
+//			
+//			//--------------------------------------------
+//			PCL.blur.mouseleave(_event);
+//			//--------------------------------------------
+//		});
+//	};
+//	if ($(".hc-preview").length > 0) {
+//		_set_event();
+//	}
+//	else {
+//		setTimeout(function () {
+//			_set_event();
+//		}, 500);
+//	}
+//});
 /*
 	########   #######  ##       ########
 	##     ## ##     ## ##       ##     ##
@@ -54,10 +55,13 @@ $(document).ready(function(){
 	##     ## ##     ## ##       ##     ##
 	########   #######  ######## ########
 */
-	$("#emph").mouseover(function () {
-			$("abbr").addClass("bold");
-		});
-	});
+//$(function () {
+//    $("#emph").mouseover(function () {
+//        $("abbr").addClass("bold");
+//    });
+//});
+
+
 
 /*
 	 ######   ######  ########   #######  ##       ##
@@ -135,7 +139,10 @@ $(function () {
     var _timer_mouseleave = {};
     
     var _div = $("div.contain > div");
-    _div.mouseenter(function () {
+    var _mouseover_delay = 1000;
+    var _mouseleave_delay = 5000;
+    
+    _div.mouseover(function () {
         var _this = $(this);
         var _index = _this.parent().children().index(_this);
         _index = "div" + _index;
@@ -150,30 +157,63 @@ $(function () {
         _timer_mouseenter[_index] = setTimeout(function () {
             //clearTimeout(_timer_mouseenter[_index]);
             //clearTimeout(_timer_mouseleave[_index]);
-            _this.find("label").mouseenter();
-            _this.attr("enter", "false");
+            
+            if (_this.attr("enter") === "false"
+                    || _this.attr("hovercard_display") === "true") {
+                return;
+            }
+            
+            //_this.find("label").mouseenter();
+            _this.find(".hc-details").addClass("hovercard-display");
+            _this.attr("hovercard_display", "true");
+            
+            //_this.attr("enter", "false");
             console.log("enter: " + _index);
-        }, 10);
+            
+            _this.attr("leave", "true");
+            
+            _timer_mouseleave[_index] = setTimeout(function () {
+                _check_mouseleave(_this, _index);
+            }, _mouseleave_delay);
+        }, _mouseover_delay);
     });
-        
-    _div.mouseout(function () {
-        
-        var _this = $(this);
-        var _index = _this.parent().children().index(_this);
-        _index = "div" + _index;
-        if (_this.attr("leave") === "true") {
-            return;
+    
+    var _check_mouseleave = function (_this, _index) {
+        if (_this.attr("enter") === "false" && _this.attr("leave") === "true") {
+            _this.attr("leave", "false");
+            _this.find(".hc-details").removeClass("hovercard-display");
+            _this.attr("hovercard_display", "false");
         }
-        _this.attr("leave", "true");
-        //clearTimeout(_timer_mouseenter[_index]);
-        _timer_mouseleave[_index] = setTimeout(function () {
-            _this.find(".hc-details").fadeOut(function () {
-                //clearTimeout(_timer_mouseenter[_index]);
-                _this.find("label").mouseleave();
-                _this.attr("leave", "false");
-                console.log("leave: " + _index);
-            });
-        }, 2000);
-        
+        else {
+            _timer_mouseleave[_index] = setTimeout(function () {
+                _check_mouseleave(_this, _index);
+            }, _mouseleave_delay - 1000);
+        }
+    };
+    
+    _div.mouseout(function () {
+        var _this = $(this);
+        _this.attr("enter", "false");
     });
+    
+//    _div.mouseout(function () {
+//        
+//        var _this = $(this);
+//        var _index = _this.parent().children().index(_this);
+//        _index = "div" + _index;
+//        if (_this.attr("leave") === "true") {
+//            return;
+//        }
+//        _this.attr("leave", "true");
+//        //clearTimeout(_timer_mouseenter[_index]);
+//        _timer_mouseleave[_index] = setTimeout(function () {
+//            _this.find(".hc-details").fadeOut(function () {
+//                //clearTimeout(_timer_mouseenter[_index]);
+//                _this.find("label").mouseleave();
+//                _this.attr("leave", "false");
+//                console.log("leave: " + _index);
+//            });
+//        }, 2000);
+//        
+//    });
 });
