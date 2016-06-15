@@ -24,7 +24,7 @@ $(document).ready(function(){
 			$("label").not(this).addClass("blur");
 			
 			//--------------------------------------------
-			PCL.blur.mousever(_event);
+			PCL.blur.mouseover(_event);
 			//--------------------------------------------
 		});
 

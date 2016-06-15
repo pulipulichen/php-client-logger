@@ -49,7 +49,7 @@ PCL.blur.timer;
 PCL.blur._enabled = false;
 PCL.blur._last_aoi = undefined;
 
-PCL.blur.mousever = function (_event) {
+PCL.blur.mouseover = function (_event) {
     clearTimeout(PCL.blur.timer);
     PCL.blur.timer = setTimeout(function () {
         var _log = PCL.u.create_mouse_log(_event, "etc.blur.mouseover");

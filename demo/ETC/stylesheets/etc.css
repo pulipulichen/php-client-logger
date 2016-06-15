@@ -56,8 +56,8 @@
 
 body {
 	font-family:Sans-serif;
-	font-size:1.3rem;
-	line-height: 5rem;
+	font-size:3rem;
+	line-height: 9rem;
 
 	padding: 0;
 	text-align: left;
@@ -70,7 +70,7 @@ body {
 }
 
 .top{
-	padding: 6rem 7rem;
+	/*padding: 6rem 7rem;*/
 }
 label{
 	text-decoration: underline;
