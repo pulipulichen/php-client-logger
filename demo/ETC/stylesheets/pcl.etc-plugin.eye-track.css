@@ -1,4 +1,9 @@
 body {
 	/* 隱藏滑鼠卷軸 */
-	cursor:none !important;
+	/*cursor:none !important;*/
+}
+
+label {
+    /*background-color: yellow;*/
+    /*border: 1px solid red;*/
 }

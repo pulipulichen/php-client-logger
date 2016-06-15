@@ -32,14 +32,27 @@
 .hc-preview {
 	z-index: 200 !important;
 }
-.hc-details{
-	height: 5rem;
-	line-height: 1.6rem !important;
-	text-align: justify !important;
+div.hc-details {
+    height: 50px;
+    line-height: 1.6rem !important;
+    text-align: justify !important;
+    font-size: 2rem !important;
+    color: blue;
+    z-index: 0;
+}
+
+.hc-details img {
+    height: 60px;
+    width: auto;
 }
 span{
-	padding: 1.79rem 0;
+    padding: 1.79rem 0;
 }
 .page_container{
-	text-align: justify;
+    text-align: justify;
+}
+
+div.contain > div > span {
+    position: relative;
+    z-index: 201;
 }

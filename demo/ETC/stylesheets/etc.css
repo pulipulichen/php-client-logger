@@ -6,14 +6,14 @@
 	background-color: #EEE;
 }
 .contain{
-	text-align: left;
-	margin-right: 1rem;
-	
-	background-color: #FFF;
+    text-align: left;
+    margin-right: 1rem;
+    background-color: #FFF;
     padding: 1.5rem;
-	border-radius: 2px;
-	-webkit-border-radius: 2px;
-	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    padding-top: 80px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
 
 .middle-title-back, .bottom-title-back{
@@ -57,7 +57,7 @@
 body {
 	font-family:Sans-serif;
 	font-size:3rem;
-	line-height: 9rem;
+	line-height: 3rem;
 
 	padding: 0;
 	text-align: left;
@@ -73,5 +73,25 @@ body {
 	/*padding: 6rem 7rem;*/
 }
 label{
-	text-decoration: underline;
+    text-decoration: underline;
+}
+
+div.contain > .padding-left {
+    text-indent: 3em;
+}
+
+div.padding-left label, div.padding-left div {
+    text-indent: 0;
+}
+
+div.contain > div {
+    width: 100%;
+    padding-bottom: 6rem;
+    /*border: 1px solid green;*/
+}
+
+.hc-name-clone {
+    z-index: 9999 !important;
+    position: absolute;
+    background-color: transparent;
 }
