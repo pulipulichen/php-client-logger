@@ -323,6 +323,8 @@ PCL_LIB.push(function (_) {
         _.u.trigger_callback(_callback);
     };
     
+    // ---------------------------------------
+    
     _.u.create_mouse_log = function (_event, _event_name) {
         var _log = {
             event: _event_name,
@@ -337,6 +339,38 @@ PCL_LIB.push(function (_) {
         }
         
         return _log;
+    };
+    
+    // ---------------------------------------
+    
+    _.u.interval_timer = {
+        timer: {}
+    };
+    
+    _.u.interval_timer._timer_name = function (_event_name, _aoi) {
+        var _name = _event_name;
+        if (_aoi !== undefined) {
+            _name = _name + "_" + _aoi;
+        }
+        return _name;
+    };
+    
+    _.u.interval_timer.set = function (_event_name, _aoi) {
+        var _name = this._timer_name(_event_name, _aoi);
+        var _timestamp = _.u.get_timestamp();
+        this.timer[_name] = _timestamp;
+        return this;
+    };
+    
+    _.u.interval_timer.get = function (_event_name, _aoi) {
+        var _name = this._timer_name(_event_name, _aoi);
+        if (typeof(this.timer[_name]) === "undefined") {
+            return 0;
+        }
+        var _timestamp = _.u.get_timestamp();
+        var _last_timestamp = this.timer[_name];
+        delete this.timer[_name];
+        return _timestamp - _last_timestamp;
     };
     
 }); //PCL_LIB.push(function (_) {

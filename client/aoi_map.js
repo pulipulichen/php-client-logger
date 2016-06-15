@@ -42,12 +42,25 @@ PCL_LIB.push(function (_) {
     };
     
     _.aoi_map.mouseenter = function (_event) {
-        _.log.add(_.u.create_mouse_log(_event, "aoi_map.mouseenter"));
+        var _log = _.u.create_mouse_log(_event, "aoi_map.mouseenter");
+        var _name = _log.xpath;
+        if (typeof(_log.aoi) !== "undefined") {
+            _name = _log.aoi;
+        }
+        _.u.interval_timer.set("aoi_map.mouseenter", _name);
+        _.log.add(_log);
         return this;
     };
     
     _.aoi_map.mouseleave = function (_event) {
-        _.log.add(_.u.create_mouse_log(_event, "aoi_map.mouseleave"));
+        var _log = _.u.create_mouse_log(_event, "aoi_map.mouseleave");
+        var _name = _log.xpath;
+        if (typeof(_log.aoi) !== "undefined") {
+            _name = _log.aoi;
+        }
+        var _interval_time = _.u.interval_timer.get("aoi_map.mouseenter", _name);
+        _log.note = _interval_time + "";
+        _.log.add(_log);
         return this;
     };
     
