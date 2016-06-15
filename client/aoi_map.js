@@ -50,7 +50,7 @@ PCL_LIB.push(function (_) {
             _.aoi_map.set_id_as_aoi();
         }
         
-        _.u.t($(_.aoi_map.attr_name).length);
+        //_.u.t($(_.aoi_map.attr_name).length);
         
         $(_.aoi_map.attr_name).hover(function (_event) {
             _.aoi_map.mouseenter(_event);

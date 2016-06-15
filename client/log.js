@@ -33,14 +33,17 @@ PCL_LIB.push(function (_) {
         if (_log.event !== "mouse_event.move" 
                 && _log.event !== "mouse_event.move_stay" 
                 && _log.event !== "aoi_map.mouseenter"
-                && _log.event !== "aoi_map.mouseleave") {
+                && _log.event !== "aoi_map.mouseleave"
+                && _log.event !== "window_event.scroll") {
             _.u.t("log", _log);
         }
         
         _.vars.log_queue.push(_log);
         
         // 如果太多，則送到伺服器
-        if (_.vars.log_queue.length > _.config.log_queue_length - 1) {
+        if (_.vars.log_queue.length > _.config.log_queue_length - 1
+                && _.log._sending_data === false) {
+            _.log._sending_data = true;
             _.log.store();
         }
         
@@ -77,17 +80,25 @@ PCL_LIB.push(function (_) {
         
         //_.u.t("_.log.store() 要儲存囉");
         if (_async !== false) {
-            $.post(_url, _data);
+            $.post(_url, _data, function () {
+                // 完成之後
+                _.log._sending_data = false;
+            });
         }
         else {
             $.ajax({
                 type: "POST",
                 async: false,
                 url: _url,
-                data: _data
+                data: _data,
+                complete: function () {
+                    _.log._sending_data = false;
+                }
             });
         }
         
         return this;
     };
+    
+    _.log._sending_data = false;
 });

@@ -13,7 +13,7 @@ PCL_LIB.push(function (_) {
      */
     _.profile.set_name = function (_name) {
         _.log.store();
-        _.vars.profile.profile_name = _name;
+        _.vars.profile.profile_name = _name + "";
         _.u.cookie.set("profile", _.vars.profile);
         _.log.add("profile.set_name", _name);
         return this;

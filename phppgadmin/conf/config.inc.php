@@ -90,7 +90,7 @@
 	// will be denied. Only set this false once you have read the FAQ and
 	// understand how to change PostgreSQL's pg_hba.conf to enable
 	// passworded local connections.
-	$conf['extra_login_security'] = true;
+	$conf['extra_login_security'] = false;
 
 	// Only show owned databases?
 	// Note: This will simply hide other databases in the list - this does
@@ -112,7 +112,7 @@
 	$conf['show_system'] = false;
 
 	// Minimum length users can set their password to.
-	$conf['min_password_length'] = 1;
+	$conf['min_password_length'] = 0;
 
 	// Width of the left frame in pixels (object browser)
 	$conf['left_width'] = 200;

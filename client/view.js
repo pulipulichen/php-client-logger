@@ -17,7 +17,8 @@ PCL_LIB.push(function (_) {
         _.u.load_script(_scripts, function () {
             _.u.load_style(_styles, function () {
                 _.view_headmap.init();
-                _.view_headmap.display();
+                _.view_headmap.display_mousemove_live();
+                //_.view_headmap.display_movestay();
             });
         });
     };
