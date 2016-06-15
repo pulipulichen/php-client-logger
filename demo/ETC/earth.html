@@ -9,136 +9,14 @@
 <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
 <link rel="stylesheet" href="stylesheets/style.css" type="text/css" charset="utf-8" />
 
-<style>
-body {
-	/* 隱藏滑鼠卷軸 */
-	cursor:none !important;
-}
-</style>
-
+<!--
+<link rel="stylesheet" href="stylesheets/pcl.etc-plugin.eye-track.css" type="text/css" charset="utf-8" />
+-->
 
 <script type="text/javascript" src="/php-client-logger/pcl.js"></script>
+<script type="text/javascript" src="javascripts/pcl.etc-plugin.js"></script>
+<script type="text/javascript" src="javascripts/etc.js"></script>
 <script type="text/javascript">
-    PCL = $pcl();
-</script>
-<script type="text/javascript">
-/*
-	########  ##       ##     ## ########
-	##     ## ##       ##     ## ##     ##
-	##     ## ##       ##     ## ##     ##
-	########  ##       ##     ## ########
-	##     ## ##       ##     ## ##   ##
-	##     ## ##       ##     ## ##    ##
-	########  ########  #######  ##     ##
-*/
-$(document).ready(function(){
-	
-	var _log_add_blur = function(_event_name, _event) {
-            PCL.log.add(_event_name);
-	};
-	var _blur_timer;
-	var _blur_enable = false;
-	
-	// ---------------------
-
-	var _set_event = function() {
-		var _selector = ".hc-preview";
-		$("label").mouseover(function (_event) {
-			$("span").addClass("blur");
-			$("label").not(this).addClass("blur");
-			
-			//--------------------------------------------
-			clearTimeout(_blur_timer);
-			_blur_timer = setTimeout(function () {
-				_log_add_blur("blur.in", _event);
-				_blur_enable = true;
-			}, 6000);
-			//--------------------------------------------
-		});
-
-		$(".hc-preview").mouseleave(function(_event) {
-			$("span").removeClass("blur");
-			$("label").not(this).removeClass("blur");
-			
-			//--------------------------------------------
-			if (_blur_enable === true) {
-				_log_add_blur("blur.out", _event);
-				_blur_enable = false;
-			}
-			//--------------------------------------------
-		});
-	};
-	if ($(".hc-preview").length > 0) {
-		_set_event();
-	}
-	else {
-		setTimeout(function () {
-			_set_event();
-		}, 500);
-	}
-/*
-	########   #######  ##       ########
-	##     ## ##     ## ##       ##     ##
-	##     ## ##     ## ##       ##     ##
-	########  ##     ## ##       ##     ##
-	##     ## ##     ## ##       ##     ##
-	##     ## ##     ## ##       ##     ##
-	########   #######  ######## ########
-*/
-	$("#emph").mouseover(function () {
-			$("abbr").addClass("bold");
-		});
-	});
-
-/*
-	 ######   ######  ########   #######  ##       ##
-	##    ## ##    ## ##     ## ##     ## ##       ##
-	##       ##       ##     ## ##     ## ##       ##
-	 ######  ##       ########  ##     ## ##       ##
-	      ## ##       ##   ##   ##     ## ##       ##
-	##    ## ##    ## ##    ##  ##     ## ##       ##
-	 ######   ######  ##     ##  #######  ######## ########
-
-$("document").ready(function() {
-	$('.top-title').mouseover(function(){
-		$('html, body').animate({
-			scrollTop: $(".middle").offset().top
-		}, 1500);
-	});
-
-	$('.middle-title').mouseover(function(){
-		$('html, body').animate({
-			scrollTop: $(".bottom").offset().top
-		}, 1500);
-	});
-	$('.middle-title-back').mouseover(function(){
-		$('html, body').animate({
-			scrollTop: $(".top").offset().top
-		}, 1500);
-	});
-
-	$('.bottom-title').mouseover(function(){
-		$('html, body').animate({
-			scrollTop: $(".top").offset().top
-		}, 1500);
-	});
-	$('.bottom-title-back').mouseover(function(){
-		$('html, body').animate({
-			scrollTop: $(".middle").offset().top
-		}, 1500);
-	});
-});
-*/
-
-/*
-	##     ##  ######              ##  ######
-	##     ## ##    ##             ## ##    ##
-	##     ## ##                   ## ##
-	######### ##        ###        ##  ######
-	##     ## ##             ##    ##       ##
-	##     ## ##    ##       ##    ## ##    ##
-	##     ##  ######         ######   ######
-*/
 $(window).load(function(){
 	var anot1 = "水",
 		about37blog = '地球',
@@ -157,22 +35,7 @@ $(window).load(function(){
 		temperature = '氣溫的劇烈改變',
 		leave = '在植物上留下一些水分';
 
-	// -------------------------
-	var _delay_time = 2000;
-	var _add_log = function (_event_name) {
-		console.log(_event_name);
-	};
-	var _hovertimer;
-	
-	var _on_hover_in = function (_event_name, _event) {
-		_hovertimer = setTimeout(function () {
-			_add_log("hovercard.hover.in");
-		}, _delay_time);
-	}
-	var _on_hover_out = function (_event_name, _event) {
-		//clearTimeout(_hovertimer);
-		_add_log("hovercard.hover.out");
-	};
+        var _delay_time = 2000;
 	// -------------------------
 	
 	$('#anot1').hovercard({
@@ -184,10 +47,10 @@ $(window).load(function(){
 		// ----------------------------------------
 		// 
 		onHoverIn: function () {
-			_on_hover_in("hovercard.hover.in");
+                    PCL.hovercard.on_hover_in(_delay_time, this);
 		},
 		onHoverOut: function () {
-			_on_hover_out("hovercard.hover.out");
+                    PCL.hovercard.on_hover_out(_delay_time, this);
 		}
 		// ----------------------------------------
 	});
@@ -196,94 +59,206 @@ $(window).load(function(){
 		detailsHTML: about37blog,
 		//width: 400,
 		delay: 2000,
-		cardImgSrc: 'http://bestanimations.com/Earth&Space/Earth/earth-spinning-rotating-animation-24.gif'
+		cardImgSrc: 'http://bestanimations.com/Earth&Space/Earth/earth-spinning-rotating-animation-24.gif',
+		
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#zootopia').hovercard({
 		detailsHTML: zootopia,
 		width: 400,
 		delay: 2000,
-		cardImgSrc: 'camels.gif'
+		cardImgSrc: 'camels.gif',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#desert').hovercard({
 		detailsHTML: desert,
 		//width: 360,
 		delay: 2000,
-		cardImgSrc: 'dr.jpg'
+		cardImgSrc: 'dr.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 	
 	$('#sand').hovercard({
 		detailsHTML: sand,
 		width: 370,
 		delay: 2000,
-		cardImgSrc: 'sand.jpg'
+		cardImgSrc: 'sand.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#sc').hovercard({
 		detailsHTML: sc,
 		width: 390,
 		delay: 2000,
-		cardImgSrc: 'sun_cream.jpg'
+		cardImgSrc: 'sun_cream.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#die').hovercard({
 		detailsHTML: die,
 		delay: 2000,
-		width: 405
+		width: 405,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#Sahara').hovercard({
 		detailsHTML: Sahara,
 		width: 400,
 		delay: 2000,
-		cardImgSrc: 'Sahara_desert.jpg'
+		cardImgSrc: 'Sahara_desert.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#bring').hovercard({
 		detailsHTML: bring,
 		//width: 400,
-		delay: 2000
+		delay: 2000,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#own_way').hovercard({
 		detailsHTML: own_way,
 		width: 285,
 		delay: 2000,
-		cardImgSrc: 'way.jpg'
+		cardImgSrc: 'way.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#keep_alive').hovercard({
 		detailsHTML: keep_alive,
 		//width: 400,
-		delay: 2000
+		delay: 2000,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#weather').hovercard({
 		detailsHTML: weather,
 		delay: 2000,
 		width: 350,
-		cardImgSrc: 'desert.gif'
+		cardImgSrc: 'desert.gif',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#daytime').hovercard({
 		detailsHTML: daytime,
 		//width: 400,
 		delay: 2000,
-		cardImgSrc: 'daytimes.gif'
+		cardImgSrc: 'daytimes.gif',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#temperature').hovercard({
 		detailsHTML: temperature,
 		width: 270,
-		delay: 2000
+		delay: 2000,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 	$('#leave').hovercard({
 		detailsHTML: leave,
 		width: 370,
 		delay: 2000,
-		cardImgSrc: 'leave.jpg'
+		cardImgSrc: 'leave.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
 	});
 
 });//]]> 

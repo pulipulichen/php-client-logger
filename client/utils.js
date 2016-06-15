@@ -326,12 +326,23 @@ PCL_LIB.push(function (_) {
     // ---------------------------------------
     
     _.u.create_mouse_log = function (_event, _event_name) {
+        if (typeof(_event) === "string" && _event_name === undefined) {
+            _event_name = _event;
+            _event = undefined;
+        }
+        
         var _log = {
             event: _event_name,
-            x: _event.pageX,
-            y: _event.pageY,
             xpath: _.u.get_xpath(_event)
         };
+        
+        if (_event !== undefined && typeof(_event.pageX) === "number") {
+            _log.x = _event.pageX;
+        }
+        
+        if (_event !== undefined && typeof(_event.pageY) === "number") {
+            _log.y = _event.pageY;
+        }
         
         var _aoi = _.u.get_aoi(_event);
         if (_aoi !== undefined) {
