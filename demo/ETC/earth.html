@@ -39,7 +39,7 @@ $(window).load(function(){
 	
 	$('#anot1').hovercard({
 		detailsHTML: anot1,
-		//width: 400,
+		width: 200,
 		delay: _delay_time,
 		cardImgSrc: 'water_Konstantin Stepanov.jpg',
 		
@@ -56,7 +56,7 @@ $(window).load(function(){
 
 	$('#about37blog').hovercard({
 		detailsHTML: about37blog,
-		//width: 400,
+		width: 200,
 		delay: _delay_time,
 		cardImgSrc: 'http://bestanimations.com/Earth&Space/Earth/earth-spinning-rotating-animation-24.gif',
 		
@@ -71,7 +71,7 @@ $(window).load(function(){
 
 	$('#zootopia').hovercard({
 		detailsHTML: zootopia,
-		width: 400,
+		width: 600,
 		delay: _delay_time,
 		cardImgSrc: 'camels.gif',
                 
@@ -86,7 +86,7 @@ $(window).load(function(){
 
 	$('#desert').hovercard({
 		detailsHTML: desert,
-		//width: 360,
+		width: 200,
 		delay: _delay_time,
 		cardImgSrc: 'dr.jpg',
                 
@@ -114,9 +114,24 @@ $(window).load(function(){
 		}
 	});
 
+	$('#Sahara').hovercard({
+		detailsHTML: Sahara,
+		width: 650,
+		delay: _delay_time,
+		cardImgSrc: 'Sahara_desert.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+        
 	$('#sc').hovercard({
 		detailsHTML: sc,
-		width: 490,
+		width: 600,
 		delay: _delay_time,
 		cardImgSrc: 'sun_cream.jpg',
                 
@@ -129,10 +144,24 @@ $(window).load(function(){
 		}
 	});
 
+	$('#bring').hovercard({
+		detailsHTML: bring,
+                width: 200,
+		delay: _delay_time,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+        
 	$('#die').hovercard({
 		detailsHTML: die,
 		delay: _delay_time,
-		width: 505,
+		width: 950,
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -143,34 +172,7 @@ $(window).load(function(){
 		}
 	});
 
-	$('#Sahara').hovercard({
-		detailsHTML: Sahara,
-		width: 500,
-		delay: _delay_time,
-		cardImgSrc: 'Sahara_desert.jpg',
-                
-		// ----------------------------------------
-		onHoverIn: function () {
-                    PCL.hovercard.on_hover_in(_delay_time, this);
-		},
-		onHoverOut: function () {
-                    PCL.hovercard.on_hover_out(_delay_time, this);
-		}
-	});
 
-	$('#bring').hovercard({
-		detailsHTML: bring,
-		//width: 400,
-		delay: _delay_time,
-                
-		// ----------------------------------------
-		onHoverIn: function () {
-                    PCL.hovercard.on_hover_in(_delay_time, this);
-		},
-		onHoverOut: function () {
-                    PCL.hovercard.on_hover_out(_delay_time, this);
-		}
-	});
 
 	$('#own_way').hovercard({
 		detailsHTML: own_way,
@@ -189,7 +191,7 @@ $(window).load(function(){
 
 	$('#keep_alive').hovercard({
 		detailsHTML: keep_alive,
-		//width: 400,
+                width: 200,
 		delay: _delay_time,
                 
 		// ----------------------------------------
@@ -204,7 +206,7 @@ $(window).load(function(){
 	$('#weather').hovercard({
 		detailsHTML: weather,
 		delay: _delay_time,
-		width: 450,
+		width: 500,
 		cardImgSrc: 'desert.gif',
                 
 		// ----------------------------------------
@@ -218,7 +220,7 @@ $(window).load(function(){
 
 	$('#daytime').hovercard({
 		detailsHTML: daytime,
-		//width: 400,
+		width: 300,
 		delay: _delay_time,
 		cardImgSrc: 'daytimes.gif',
                 
@@ -233,7 +235,7 @@ $(window).load(function(){
 
 	$('#temperature').hovercard({
 		detailsHTML: temperature,
-		width: 370,
+		width: 650,
 		delay: _delay_time,
                 
 		// ----------------------------------------
@@ -247,7 +249,7 @@ $(window).load(function(){
 
 	$('#leave').hovercard({
 		detailsHTML: leave,
-		width: 470,
+		width: 550,
 		delay: _delay_time,
 		cardImgSrc: 'leave.jpg',
                 
@@ -292,17 +294,18 @@ $(window).load(function(){
                                         <label id="desert">desert</label>
                                         <span> is a place where there is <abbr>little water</abbr>, </span>
                                     </div>
-                                    <div class="padding-left line">and there is 
-                                        <label id="sand">a lot of <abbr>sand on the ground</abbr>
-                                        </label><span>.</span>
+                                    <div class="padding-left line">
+                                        <span>and there is </span>
+                                        <label id="sand">a lot of <abbr>sand on the ground</abbr></label>
+                                        <span>.</span>
                                     </div>
                                     <div class="line">
                                         <label id="Sahara">The <abbr>sun in deserts</abbr> is so <abbr>strong</abbr></label>
                                     </div>
                                     <div class="padding-left line">
                                         <span> that we have to put on </span>
-                                        <label id="sc"><abbr>sun cream</abbr> to <abbr>protect</abbr> our <abbr>skin</abbr>
-                                        </label><span>.</span>
+                                        <label id="sc"><abbr>sun cream</abbr> to <abbr>protect</abbr> our <abbr>skin</abbr></label>
+                                        <span>.</span>
                                     </div>
                                     <div class="line">
                                         <span>We must </span>

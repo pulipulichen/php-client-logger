@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ETR</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.hovercard.min.js"></script>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<link href="hover.css" rel="stylesheet">
+<script type="text/javascript">
+/*
+	########  ##       ##     ## ########
+	##     ## ##       ##     ## ##     ##
+	##     ## ##       ##     ## ##     ##
+	########  ##       ##     ## ########
+	##     ## ##       ##     ## ##   ##
+	##     ## ##       ##     ## ##    ##
+	########  ########  #######  ##     ##
+*/
+$(document).ready(function(){
+	var _set_event = function() {
+		var _selector = ".hc-preview";
+		$("label").mouseover(function () {
+			$("span").addClass("blur");
+			$("label").not(this).addClass("blur");
+			$(".middle-title-back, .bottom-title-back, .top-title, .middle-title, .bottom-title").addClass("hide");
+		});
+
+		$(".hc-preview").mouseleave(function() {
+			$("span").removeClass("blur");
+			$("label").not(this).removeClass("blur");
+			$(".middle-title-back, .bottom-title-back, .top-title, .middle-title, .bottom-title").removeClass("hide");
+		});
+	};
+	if ($(".hc-preview").length > 0) {
+		_set_event();
+	}
+	else {
+		setTimeout(function () {
+			_set_event();
+		}, 500);
+	}
+/*
+	########   #######  ##       ########
+	##     ## ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	########  ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	########   #######  ######## ########
+*/
+	$("#emph").mouseover(function () {
+			$("abbr").addClass("bold");
+		});
+});
+
+/*
+	 ######   ######  ########   #######  ##       ##
+	##    ## ##    ## ##     ## ##     ## ##       ##
+	##       ##       ##     ## ##     ## ##       ##
+	 ######  ##       ########  ##     ## ##       ##
+	      ## ##       ##   ##   ##     ## ##       ##
+	##    ## ##    ## ##    ##  ##     ## ##       ##
+	 ######   ######  ##     ##  #######  ######## ########
+*/
+$("document").ready(function() {
+	$('.top-title')
+	.mouseover(function(){
+		myVar = setTimeout(function() {
+			$('html, body').animate({
+				scrollTop: $(".middle").offset().top
+			}, 1000);
+		}, 1000);
+	})
+	.mouseout(function(){
+		clearTimeout(myVar);
+	});
+
+	$('.middle-title')
+		.mouseover(function(){
+			myVar = setTimeout(function() {
+				$('html, body').animate({
+					scrollTop: $(".bottom").offset().top
+				}, 1000);
+			}, 1000);
+		})
+		.mouseout(function(){
+			clearTimeout(myVar);
+		});
+
+	$('.middle-title-back')
+		.mouseover(function(){
+			myVar = setTimeout(function() {
+				$('html, body').animate({
+					scrollTop: $(".top").offset().top
+				}, 1000);
+			}, 1000);
+		})
+		.mouseout(function(){
+			clearTimeout(myVar);
+		});
+
+	$('.bottom-title')
+		.mouseover(function(){
+			myVar = setTimeout(function() {
+				$('html, body').animate({
+					scrollTop: $(".top").offset().top
+				}, 1000);
+			}, 1000);
+		})
+		.mouseout(function(){
+			clearTimeout(myVar);
+		});
+
+	$('.bottom-title-back')
+		.mouseover(function(){
+			myVar = setTimeout(function() {
+				$('html, body').animate({
+					scrollTop: $(".middle").offset().top
+				}, 1000);
+			}, 1000);
+		})
+		.mouseout(function(){
+			clearTimeout(myVar);
+		});
+});
+
+/*
+	##     ##  ######              ##  ######
+	##     ## ##    ##             ## ##    ##
+	##     ## ##                   ## ##
+	######### ##        ###        ##  ######
+	##     ## ##             ##    ##       ##
+	##     ## ##    ##       ##    ## ##    ##
+	##     ##  ######         ######   ######
+*/
+$(window).load(function(){
+	var about37blog = 'Annotation 2.';
+
+	var anot1 = "A corporation and online social service headquartered in Menlo Park, California, in United States.<br/>";
+
+	$('#anot1').hovercard({
+		detailsHTML: anot1,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'Facebook.gif'
+	});
+
+	$('#about37blog').hovercard({
+		detailsHTML: about37blog,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: '12115887.png'
+	});
+
+});//]]> 
+</script>
+
+<style>
+.top, .middle, .bottom{
+	padding: 3rem;
+	height: 42rem;
+	margin-bottom: 30px;
+	background-color: #EEE;
+}
+
+.middle-title-back, .bottom-title-back{
+	left: 1rem;
+}
+
+.middle-title-back{
+	top: 51rem;
+}
+
+.bottom-title-back{
+	top: 100.5rem;
+}
+
+.middle-title-back, .bottom-title-back, .top-title, .middle-title, .bottom-title{
+	text-align:center;
+	font-size: 4rem;
+	font-weight: bold;
+	position: absolute;
+	width: 5.5rem;
+	height: 5.5rem;
+	background-color:rgba(128,128,128,0.5);
+	/*
+	opacity: 0;
+	*/
+}
+
+.top-title, .middle-title, .bottom-title{
+	right: 1.5rem;
+}
+.top-title{
+	top: 33rem;
+}
+.middle-title{
+	top: 91.5rem;
+}
+.bottom-title{
+	top: 142rem;
+}
+body {
+	font-family:Sans-serif;
+	font-size:1.3rem;
+	line-height: 5rem;
+
+	overflow:hidden;
+
+	padding: 0;
+	text-align: left;
+	position: relative;
+	margin: 0;
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
+
+	cursor: default;
+}
+.page_container{
+	padding: 5rem 7rem;
+}
+</style>
+</head>
+<body>
+<noscript>
+	<div id="noscript">You need JavaScript enabled to view most of the demos!</div>
+</noscript>
+
+<div id="container">
+	<div id="inner_wrap">
+		<div class="main">
+			<div class="top">
+				<div class="page_container">
+					<span>Connect with friends and the world around you on </span><label id="anot1">Facebook</label><span>. See photos and updates from friends in News Feed. Share what's new in your life on your Timeline. Find more of what you're looking for with Facebook Search. Read complete blog post on </span><label id="about37blog">DLLL</label><span>. Sign Up It’s free and always will be. By clicking Sign Up, you agree to our Terms and that you have read our Data Policy, including our Cookie Use. Create a Page for a celebrity, band or business.</span>
+				</div>
+				<div class="lsf symbol top-title hvr-sweep-to-bottom">down</div>
+			</div>
+			<div class="middle">
+				<div class="lsf symbol middle-title-back hvr-sweep-to-top">up</div>
+				<div style="padding: 5rem 6rem;"><abbr>Connect</abbr> with friends and the world around you on <abbr>Youtube</abbr>. See <abbr>photos and updates</abbr> from friends in <abbr>News Feed</abbr>. Share what's new in your life on your <abbr>Timeline</abbr>. Find more of what you're looking for with <abbr>Facebook Search</abbr>. Read <abbr>complete</abbr> blog post on. <abbr>Sign Up It’s free and always will be. By clicking</abbr>. Sign Up, you agree to our <abbr>Terms</abbr> and that you have read our Data <abbr>Policy</abbr>, including our Cookie Use. <abbr>Create</abbr> a Page for a <abbr>celebrity</abbr>, band or <bdi id="emph">business.</bdi></div>
+				<div class="lsf symbol middle-title hvr-sweep-to-bottom">down</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
