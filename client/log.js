@@ -30,7 +30,12 @@ PCL_LIB.push(function (_) {
             _log.timestamp = _.u.get_timestamp();
         }
         
-        _.u.t("log", _log);
+        if (_log.event !== "mouse_event.move" 
+                && _log.event !== "mouse_event.move_stay" 
+                && _log.event !== "aoi_map.mouseenter"
+                && _log.event !== "aoi_map.mouseleave") {
+            _.u.t("log", _log);
+        }
         
         _.vars.log_queue.push(_log);
         

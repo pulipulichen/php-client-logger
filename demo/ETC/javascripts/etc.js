@@ -24,11 +24,7 @@ $(document).ready(function(){
 			$("label").not(this).addClass("blur");
 			
 			//--------------------------------------------
-			clearTimeout(_blur_timer);
-			_blur_timer = setTimeout(function () {
-				_log_add_blur("blur.in", _event);
-				_blur_enable = true;
-			}, 6000);
+			PCL.blur.mousever(_event);
 			//--------------------------------------------
 		});
 
@@ -37,10 +33,7 @@ $(document).ready(function(){
 			$("label").not(this).removeClass("blur");
 			
 			//--------------------------------------------
-			if (_blur_enable === true) {
-				_log_add_blur("blur.out", _event);
-				_blur_enable = false;
-			}
+			PCL.blur.mouseleave(_event);
 			//--------------------------------------------
 		});
 	};
