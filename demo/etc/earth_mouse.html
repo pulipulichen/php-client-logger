@@ -9,12 +9,14 @@
 <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
 <link rel="stylesheet" href="stylesheets/style.css" type="text/css" charset="utf-8" />
 
+<!--
 <link rel="stylesheet" href="stylesheets/pcl.etc-plugin.eye-tracking.css" type="text/css" charset="utf-8" />
+-->
 
 <script type="text/javascript" src="/php-client-logger/pcl.js"></script>
+<script type="text/javascript" src="javascripts/pcl.mouse-config.js"></script>
 <script type="text/javascript" src="javascripts/pcl.etc-plugin.js"></script>
 
-<script type="text/javascript" src="javascripts/etc.js"></script>
 <script type="text/javascript">
 $(window).load(function(){
 	var anot1 = "水",
@@ -34,7 +36,7 @@ $(window).load(function(){
 		temperature = '氣溫的劇烈改變',
 		leave = '在植物上留下一些水分';
 
-        var _delay_time = 500;
+        var _delay_time = PCL.etc_config.hovercard_delay_time;
 	// -------------------------
 	
 	$('#anot1').hovercard({
