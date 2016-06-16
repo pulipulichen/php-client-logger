@@ -15,10 +15,12 @@ PCL.etc_config = {
     blur_enable_delay: 1000,
     blur_disable_delay: 5000,
     
-    page_turner_delay: 3000,
-    page_turner_disable_delay: 3000,
+    page_turner_delay: 2000,
+    page_turner_disable_delay: 5000,
     page_turner_page_height: 200,
     page_turner_speed: 1000,
+    page_turner_top_padding: 100,
+    page_turner_bottom_padding: 300,
     
     
     // @TODO 正式實驗的時候要註解掉

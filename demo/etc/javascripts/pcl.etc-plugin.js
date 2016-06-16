@@ -86,12 +86,14 @@ PCL.blur.mouseleave = function (_event) {
     PCL.blur._enabled = false;
 };
 
-PCL.mouserover = function (_element, _enable_time, _min_time, _callback) {
+PCL.mouseover = function (_event_name, _element, _enable_time, _min_time, _callback) {
     if (_element.length === 0 || typeof(_callback) !== "function") {
         return this;
     }
     
-    console.log([_enable_time, _min_time]);
+    var _prefix = "pcl-mouseover-" + _event_name + "-";
+    
+    //console.log([_enable_time, _min_time]);
     
 //    var _index = 0;
 //    var _timer = {};
@@ -106,26 +108,26 @@ PCL.mouserover = function (_element, _enable_time, _min_time, _callback) {
 //            _index++;
 //        }
         
-        _this.attr("pcl-mouseover-over", PCL.u.get_timestamp());
+        _this.attr(_prefix + "over", PCL.u.get_timestamp());
         
-        if (_this.attr("pcl-mouseover-set_timer") === "true") {
+        if (_this.attr(_prefix + "set_timer") === "true") {
             return;
         }
         
-        _this.attr("pcl-mouseover-set_timer", "true");
+        _this.attr(_prefix + "set_timer", "true");
         setTimeout(function () {
-            var _sum = parseInt(_this.attr("pcl-mouseover-sum"));
+            var _sum = parseInt(_this.attr(_prefix + "sum"));
             
             // 做一次結算
-            if (_this.attr("pcl-mouseover-over") !== undefined) {
-                var _timestamp = parseInt(_this.attr("pcl-mouseover-over"));
+            if (_this.attr(_prefix + "over") !== undefined) {
+                var _timestamp = parseInt(_this.attr(_prefix + "over"));
                 var _interval = PCL.u.get_timestamp() - _timestamp;
                 _sum = _interval + _timestamp;
             }
             
-            _this.removeAttr("pcl-mouseover-over");
-            _this.removeAttr("pcl-mouseover-sum");
-            _this.removeAttr("pcl-mouseover-set_timer");
+            _this.removeAttr(_prefix + "over");
+            _this.removeAttr(_prefix + "sum");
+            _this.removeAttr(_prefix + "set_timer");
             
             if (_sum > _min_time) {
                 _callback(_this);
@@ -135,20 +137,89 @@ PCL.mouserover = function (_element, _enable_time, _min_time, _callback) {
     
     _element.mouseout(function () {
         var _this = $(this);
-        var _timestamp = parseInt(_this.attr("pcl-mouseover-over"));
+        var _timestamp = parseInt(_this.attr(_prefix + "over"));
         if (isNaN(_timestamp)) {
             return;
         }
         
         var _interval = PCL.u.get_timestamp() - _timestamp;
-        var _sum = parseInt(_this.attr("pcl-mouseover-sum"));
+        var _sum = parseInt(_this.attr(_prefix + "sum"));
         if (_sum === undefined || isNaN(_sum)) {
             _sum = 0;
         }
         console.log([_sum, _interval]);
         _sum = _sum + _interval;
-        _this.attr("pcl-mouseover-sum", _sum);
-        _this.removeAttr("pcl-mouseover-over");
+        _this.attr(_prefix + "sum", _sum);
+        _this.removeAttr(_prefix + "over");
+    });
+};
+
+
+PCL.mouseout = function (_event_name, _element, _enable_time, _min_time, _callback) {
+    if (_element.length === 0 || typeof(_callback) !== "function") {
+        return this;
+    }
+    
+    var _prefix = "pcl-mouseout-" + _event_name + "-";
+    
+    //console.log([_enable_time, _min_time]);
+    
+//    var _index = 0;
+//    var _timer = {};
+    
+    _element.mouseout(function () {
+        var _this = $(this);
+        
+//        var _timer_index = _this.attr("pcl-mouseover-index");
+//        if (_timer_index === undefined) {
+//            _this.attr("pcl-mouseover-index", _index);
+//            _timer_index = _index;
+//            _index++;
+//        }
+        
+        _this.attr(_prefix + "out", PCL.u.get_timestamp());
+        
+        if (_this.attr(_prefix + "set_timer") === "true") {
+            return;
+        }
+        
+        _this.attr(_prefix + "set_timer", "true");
+        setTimeout(function () {
+            var _sum = parseInt(_this.attr(_prefix + "sum"));
+            
+            // 做一次結算
+            if (_this.attr(_prefix + "out") !== undefined) {
+                var _timestamp = parseInt(_this.attr(_prefix + "out"));
+                var _interval = PCL.u.get_timestamp() - _timestamp;
+                _sum = _interval + _timestamp;
+            }
+            
+            _this.removeAttr(_prefix + "out");
+            _this.removeAttr(_prefix + "sum");
+            _this.removeAttr(_prefix + "set_timer");
+            
+            if (_sum > _min_time) {
+                _callback(_this);
+            }
+        }, _enable_time);
+    });
+    
+    _element.mouseover(function () {
+        var _this = $(this);
+        var _timestamp = parseInt(_this.attr(_prefix + "out"));
+        if (isNaN(_timestamp)) {
+            return;
+        }
+        
+        var _interval = PCL.u.get_timestamp() - _timestamp;
+        var _sum = parseInt(_this.attr(_prefix + "sum"));
+        if (_sum === undefined || isNaN(_sum)) {
+            _sum = 0;
+        }
+        console.log([_sum, _interval]);
+        _sum = _sum + _interval;
+        _this.attr(_prefix + "sum", _sum);
+        _this.removeAttr(_prefix + "out");
     });
 };
 
@@ -274,23 +345,23 @@ $("document").ready(function() {
 
 $(function () {
     
-    setTimeout(function () {
-        $("div.contain label.hc-name").each(function (_index, _element) {
-            //console.log(1);
-            _element = $(_element);
-            var _offset = _element.offset();
-            var _clone = _element.clone().appendTo(_element.parents(".line"));
-            _clone.addClass("hc-name-clone")
-                    .removeClass("hc-name")
-                    .removeAttr("id")
-                    .css("top", _offset.top + "px")
-                    .css("left", _offset.left + "px")
-                    .width(_element.width())
-                    .height(_element.height())
-                    .text("");
-        });
-        
-    }, 100);
+//    阻止hovercard事件發生，不過好像不用了？
+//    setTimeout(function () {
+//        $("div.contain label.hc-name").each(function (_index, _element) {
+//            //console.log(1);
+//            _element = $(_element);
+//            var _offset = _element.offset();
+//            var _clone = _element.clone().appendTo(_element.parents(".line"));
+//            _clone.addClass("hc-name-clone")
+//                    .removeClass("hc-name")
+//                    .removeAttr("id")
+//                    .css("top", _offset.top + "px")
+//                    .css("left", _offset.left + "px")
+//                    .width(_element.width())
+//                    .height(_element.height())
+//                    .text("");
+//        });
+//    }, 100);
 
     var _timer_mouseenter = {};
     var _timer_mouseleave = {};
@@ -305,73 +376,99 @@ $(function () {
     var _height = window.innerHeight;
     var doc = document.documentElement;
     
-    _div.mouseover(function (_event) {
-        var _this = $(this);
-        var _current_top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        //console.trace([_event.pageY - _current_top, _this.offset().top - _current_top, _height]);
-        if (_prev_line === true && _this.next().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
-            _this = _this.next();
-        } 
-        var _index = _this.parent().children().index(_this);
-        _index = "div" + _index;
-        //console.log(_index);
-        if (_this.attr("enter") === "true") {
-            return;
+//    _div.mouseover(function (_event) {
+//        var _this = $(this);
+//        
+//        
+//        var _current_top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+//        //console.trace([_event.pageY - _current_top, _this.offset().top - _current_top, _height]);
+//        if (_prev_line === true && _this.next().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
+//            _this = _this.next();
+//        }
+//        
+//        
+//        var _index = _this.parent().children().index(_this);
+//        _index = "div" + _index;
+//        //console.log(_index);
+//        if (_this.attr("enter") === "true") {
+//            return;
+//        }
+//        //_disable_blur();
+//        
+//        //clearTimeout(_timer_mouseenter[_index]);
+//        //clearTimeout(_timer_mouseleave[_index]);
+//        _this.attr("enter", "true");
+//        
+//        _timer_mouseenter[_index] = setTimeout(function () {
+//            //clearTimeout(_timer_mouseenter[_index]);
+//            //clearTimeout(_timer_mouseleave[_index]);
+//            
+//            if (_this.attr("enter") === "false"
+//                    || _this.attr("hovercard_display") === "true") {
+//                return;
+//            }
+//            
+//            //_this.find("label").mouseenter();
+//            _this.find(".hc-details").addClass("hovercard-display");
+//            //_disable_blur();
+//            _this.attr("hovercard_display", "true");
+//            
+//            //_this.attr("enter", "false");
+//            //console.log("enter: " + _index);
+//            
+//            _this.attr("leave", "true");
+//            
+//            _timer_mouseleave[_index] = setTimeout(function () {
+//                _check_mouseleave(_this, _index);
+//            }, _mouseleave_delay);
+//        }, _mouseover_delay);
+//    });
+//    
+//    var _check_mouseleave = function (_this, _index) {
+//        if (_this.attr("enter") === "false" && _this.attr("leave") === "true") {
+//            _this.attr("leave", "false");
+//            _this.find(".hc-details").removeClass("hovercard-display");
+//            _this.attr("hovercard_display", "false");
+//            //_disable_blur();
+//        }
+//        else {
+//            _timer_mouseleave[_index] = setTimeout(function () {
+//                _check_mouseleave(_this, _index);
+//            }, PCL.etc_config.hovercard_mouseleave_check_delay);
+//        }
+//    };
+//    
+//    _div.mouseout(function () {
+//        var _this = $(this);
+//        var _current_top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+//        if (_prev_line === true && _this.next().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
+//            _this = _this.next();
+//        } 
+//        _this.attr("enter", "false");
+//    
+//    });
+    
+    PCL.mouseover("on_hover_in", _div, _mouseover_delay, _mouseover_delay*0.5, function (_this) {
+        if (_this.attr("display_hover") === undefined) {
+            _this.attr("display_hover", "true");
+            _on_hover_in(_this);
         }
-        //_disable_blur();
-        
-        //clearTimeout(_timer_mouseenter[_index]);
-        //clearTimeout(_timer_mouseleave[_index]);
-        _this.attr("enter", "true");
-        
-        _timer_mouseenter[_index] = setTimeout(function () {
-            //clearTimeout(_timer_mouseenter[_index]);
-            //clearTimeout(_timer_mouseleave[_index]);
-            
-            if (_this.attr("enter") === "false"
-                    || _this.attr("hovercard_display") === "true") {
-                return;
-            }
-            
-            //_this.find("label").mouseenter();
-            _this.find(".hc-details").addClass("hovercard-display");
-            //_disable_blur();
-            _this.attr("hovercard_display", "true");
-            
-            //_this.attr("enter", "false");
-            //console.log("enter: " + _index);
-            
-            _this.attr("leave", "true");
-            
-            _timer_mouseleave[_index] = setTimeout(function () {
-                _check_mouseleave(_this, _index);
-            }, _mouseleave_delay);
-        }, _mouseover_delay);
     });
     
-    var _check_mouseleave = function (_this, _index) {
-        if (_this.attr("enter") === "false" && _this.attr("leave") === "true") {
-            _this.attr("leave", "false");
-            _this.find(".hc-details").removeClass("hovercard-display");
-            _this.attr("hovercard_display", "false");
-            //_disable_blur();
+    PCL.mouseout("on_hover_out", _div, _mouseover_delay, _mouseover_delay*0.5, function (_this) {
+        if (_this.attr("display_hover") === "true") {
+            _this.removeAttr("display_hover");
+            _on_hover_out(_this);
         }
-        else {
-            _timer_mouseleave[_index] = setTimeout(function () {
-                _check_mouseleave(_this, _index);
-            }, PCL.etc_config.hovercard_mouseleave_check_delay);
-        }
+    });
+    
+    var _on_hover_in = function (_this) {
+        _this.find(".hc-details").addClass("hovercard-display");
     };
     
-    _div.mouseout(function () {
-        var _this = $(this);
-        var _current_top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        if (_prev_line === true && _this.next().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
-            _this = _this.next();
-        } 
-        _this.attr("enter", "false");
-    
-    });
+    var _on_hover_out = function (_this) {
+        _this.find(".hc-details").removeClass("hovercard-display");
+    };
     
     // --------------------------------------------
     
@@ -386,8 +483,8 @@ $(function () {
 //        }, _blur_delay);
 //    });
 
-    PCL.mouserover(_div, _blur_delay, _blur_delay*0.5, function (_this) {
-        _enable_blur(_this);
+    PCL.mouseover( "blur", _div, _blur_delay, _blur_delay*0.5, function (_this) {
+        _enable_blur(_this);        
     });
     
     var _enable_blur = function (_this) {
@@ -461,93 +558,81 @@ $(function () {
     var _remove_hover_delay = PCL.etc_config.page_turner_disable_delay;
     var _turner_height = PCL.etc_config.page_turner_page_height;
     
-    _page_turner_up.mouseover(function () {
-        var _this = $(this);
-        if (_this.attr("hover") === "true") {
+    //----------------------------------------------
+    
+    var _last_page_up;
+    var _page_up = function (_this) {
+        if (PCL.u.get_timestamp() - _last_page_up < _remove_hover_delay) {
+            _this.removeClass("hover");
             return;
         }
+        //_this.removeClass("hover");
+        _page_turner_down.removeClass("disable");
+        _disable_blur();
         
-        _this.attr("hover", "true");
-        _this.addClass("hover");
-        clearTimeout(_page_timer["pageup"]);
-        _page_timer["pageup"] = setTimeout(function () {
-            //clearTimeout(_page_timer["pageup"]);
-            if (_this.attr("hover") !== "true") {
-                _this.removeClass("hover");
-                return;
-            }
-            var _top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-            var _to_top = _top - (_height - _turner_height);
-            if (_to_top < 0) {
-                _to_top = 0;
-                _this.addClass("disable");
-            }
-            _disable_blur();
-            _scrollTo(document.body, _to_top, PCL.etc_config.page_turner_speed);
-            _this.attr("scrolling", "true");
-            setTimeout(function () {
-                _this.attr("hover", "false");
-                _this.attr("scrolling", "false");
-            }, _remove_hover_delay);
+        var _top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+        var _to_top = _top - (_height - _turner_height);
+        if (_to_top < (0 + PCL.etc_config.page_turner_top_padding)) {
+            _to_top = 0;
+            _this.addClass("disable");
+        }
+        else {
             _this.removeClass("hover");
-            
-            _page_turner_down.removeClass("disable");
-        }, _turner_delay);
+        }
+        _scrollTo(document.body, _to_top, PCL.etc_config.page_turner_speed);
+        
+        _last_page_up = PCL.u.get_timestamp();
+    };
+    
+    PCL.mouseover("page_up", _page_turner_up, _turner_delay, _turner_delay*0.5, function (_this) {
+        _page_up(_this);
     });
     
+    _page_turner_up.mouseover(function () {
+        $(this).addClass("hover");
+    });
     _page_turner_up.mouseout(function () {
-        var _this = $(this);
-        if (_this.attr("scrolling") === "true") {
+        $(this).removeClass("hover");
+    });
+    
+    // ----------------------------------
+    
+    var _last_page_down;
+    var _page_down = function (_this) {
+        if (PCL.u.get_timestamp() - _last_page_down < _remove_hover_delay) {
+            _this.removeClass("hover");
             return;
         }
-        _this.removeClass("hover");
-        _this.attr("hover", "false");
-        //clearTimeout(_page_timer["pageup"]);
+        //_this.removeClass("hover");
+        _page_turner_up.removeClass("disable");
+        _disable_blur();
+        
+        var _top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+        var _to_top = _top + (_height - _turner_height);
+        if (_to_top > (_body_height + PCL.etc_config.page_turner_bottom_padding)) {
+            _to_top = _body_height;
+            _this.addClass("disable");
+        }
+        else {
+            _this.removeClass("hover");
+        }
+        _scrollTo(document.body, _to_top, PCL.etc_config.page_turner_speed);
+        
+        _last_page_down = PCL.u.get_timestamp();
+    };
+    
+    PCL.mouseover("page_down", _page_turner_down, _turner_delay, _turner_delay*0.5, function (_this) {
+        _page_down(_this);
     });
     
     _page_turner_down.mouseover(function () {
-        var _this = $(this);
-        if (_this.attr("hover") === "true") {
-            return;
-        }
-        
-        _this.attr("hover", "true");
-        _this.addClass("hover");
-        clearTimeout(_page_timer["pagedown"]);
-        _page_timer["pagedown"] = setTimeout(function () {
-            clearTimeout(_page_timer["pagedown"]);
-            if (_this.attr("hover") !== "true") {
-                _this.removeClass("hover");
-                return;
-            }
-            var _top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-            var _to_top = _top + (_height - _turner_height);
-            if (_to_top + _height > _body_height - 1) {
-                console.trace(["_page_turner_down", _to_top, _height, _to_top+_height, _body_height]);
-                _this.addClass("disable");
-            }
-            _disable_blur();
-            _this.attr("scrolling", "true");
-            _scrollTo(document.body, _to_top, PCL.etc_config.page_turner_speed);
-            setTimeout(function () {
-                _this.attr("hover", "false");
-                _this.attr("scrolling", "false");
-                clearTimeout(_page_timer["pagedown"]);
-            }, _remove_hover_delay);
-            _this.removeClass("hover");
-            _page_turner_up.removeClass("disable");
-        }, _turner_delay);
+        $(this).addClass("hover");
+    });
+    _page_turner_down.mouseout(function () {
+        $(this).removeClass("hover");
     });
     
-    _page_turner_down.mouseout(function () {
-        var _this = $(this);
-        if (_this.attr("scrolling") === "true") {
-            return;
-        }
-        _this.removeClass("hover");
-        _this.attr("hover", "false");
-        //clearTimeout(_page_timer["pagedown"]);
-    });
+    // -----------------------------------
     
     var _scrollTo = function(element, to, duration, _callback) {
         if (duration <= 0) {

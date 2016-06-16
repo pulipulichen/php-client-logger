@@ -151,6 +151,7 @@ div.contain > div > span {
     z-index: 199;
 }
 div.contain > div[hovercard_display="true"] > span,
+div.contain > div[display_hover] > span,
 div.contain > div[enter="true"] > span {
     z-index: 201;
 }
@@ -161,7 +162,7 @@ div.contain > div[enter="true"] > span {
     /*z-index: 9999;*/
     z-index: 0;
     width: 100%;
-    height: 100px;
+    height: 50px;
     left: 0;
     /*background-color: red;*/
     transition-duration: 3s;
@@ -179,7 +180,7 @@ div.contain > div[enter="true"] > span {
     background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
-    height: 150px;
+    height: 100px;
 }
 
 .page-turner.down {
