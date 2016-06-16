@@ -147,7 +147,7 @@ PCL.mouseover = function (_event_name, _element, _enable_time, _min_time, _callb
         if (_sum === undefined || isNaN(_sum)) {
             _sum = 0;
         }
-        console.log([_sum, _interval]);
+        //console.log([_sum, _interval]);
         _sum = _sum + _interval;
         _this.attr(_prefix + "sum", _sum);
         _this.removeAttr(_prefix + "over");
@@ -216,7 +216,7 @@ PCL.mouseout = function (_event_name, _element, _enable_time, _min_time, _callba
         if (_sum === undefined || isNaN(_sum)) {
             _sum = 0;
         }
-        console.log([_sum, _interval]);
+        //console.log([_sum, _interval]);
         _sum = _sum + _interval;
         _this.attr(_prefix + "sum", _sum);
         _this.removeAttr(_prefix + "out");
@@ -452,22 +452,35 @@ $(function () {
         if (_this.attr("display_hover") === undefined) {
             _this.attr("display_hover", "true");
             _on_hover_in(_this);
+            _this.attr("display_hover_timestamp", PCL.u.get_timestamp());
         }
     });
     
-    PCL.mouseout("on_hover_out", _div, _mouseover_delay, _mouseover_delay*0.5, function (_this) {
+    var _hover_display_min_time = 2000;
+    
+    var _mouseout_callback = function (_this) {
         if (_this.attr("display_hover") === "true") {
+            var _last_timestamp = parseInt(_this.attr("display_hover_timestamp"));
+            if (PCL.u.get_timestamp() - _last_timestamp < _hover_display_min_time) {
+                setTimeout(function () {
+                    _mouseout_callback(_this);
+                }, PCL.u.get_timestamp() - _last_timestamp);
+                return;
+            }
+            
             _this.removeAttr("display_hover");
             _on_hover_out(_this);
         }
-    });
+    };
+    
+    PCL.mouseout("on_hover_out", _div, _mouseover_delay, _mouseover_delay*0.5, _mouseout_callback);
     
     var _on_hover_in = function (_this) {
         _this.find(".hc-details").addClass("hovercard-display");
     };
     
     var _on_hover_out = function (_this) {
-        _this.find(".hc-details").removeClass("hovercard-display");
+        _this.find(".hc-details.hovercard-display").removeClass("hovercard-display");
     };
     
     // --------------------------------------------
@@ -492,14 +505,30 @@ $(function () {
         //    return;
         //}
         
-        $(".line > span").addClass("blur");
-        $(".line > div.hc-preview").addClass("blur");
-        _this.find(".blur").removeClass("blur");
+        
         var _next_line = _this.next();
+        var _prev_line = _this.prev();
+        _this.addClass("dont-blur");
+        _next_line.addClass("dont-blur");
+        _prev_line.addClass("dont-blur");
+        
+        $(".line:not(.dont-blur) > span").addClass("blur");
+        $(".line:not(.dont-blur) > div.hc-preview").addClass("blur");
+        
+        $(".line:not(.dont-blur)").find(".hc-details.hovercard-display").removeClass("hovercard-display");
+        
+        // -------------------------
+        
+        _this.removeClass("dont-blur");
+        _next_line.removeClass("dont-blur");
+        _prev_line.removeClass("dont-blur");
+        
+        // -------------------------------
+        
+        _this.find(".blur").removeClass("blur");
         if (_next_line.length > 0) {
             _next_line.find(".blur").removeClass("blur");
         }
-        var _prev_line = _this.prev();
         if (_prev_line.length > 0) {
             _prev_line.find(".blur").removeClass("blur");
         }
@@ -543,7 +572,14 @@ $(function () {
     var _page_turner_down = $('<div class="page-turner down"></div>').appendTo("body");
     
     var doc = document.documentElement;
+    
     var _height = window.innerHeight;
+    
+    //var _target_line = $(".line:last");
+    //var _line_height = _target_line.outerHeight() * 4;
+    //alert($(".line:first").height());
+    //alert(_line_height);
+    
     var body = document.body,
     html = document.documentElement;
 
@@ -554,13 +590,14 @@ $(function () {
         "pageup":undefined,
         "pagedown":undefined
     };
+    
     var _turner_delay = PCL.etc_config.page_turner_delay;
     var _remove_hover_delay = PCL.etc_config.page_turner_disable_delay;
     var _turner_height = PCL.etc_config.page_turner_page_height;
     
     //----------------------------------------------
     
-    var _last_page_up;
+    var _last_page_up = PCL.u.get_timestamp() - _remove_hover_delay;
     var _page_up = function (_this) {
         if (PCL.u.get_timestamp() - _last_page_up < _remove_hover_delay) {
             _this.removeClass("hover");
@@ -571,7 +608,21 @@ $(function () {
         _disable_blur();
         
         var _top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        var _to_top = _top - (_height - _turner_height);
+        
+        var _match_line_border = _top + _page_turner_up.outerHeight();
+        var _line_top;
+        var _lines = $(".line");
+        for (var _i = 0; _i < _lines.length; _i++) {
+            _line_top = _lines.eq(_i).offset().top;
+            if (_line_top > _match_line_border) {
+                break;
+            }
+        }
+        var _interval_height = _line_top - _page_turner_up.offset().top;
+        var _to_top = _top - _height + _interval_height + _page_turner_down.outerHeight();
+        
+        //var _to_top = _top - (_height - _turner_height);
+        //var _to_top = _top - _line_height;
         if (_to_top < (0 + PCL.etc_config.page_turner_top_padding)) {
             _to_top = 0;
             _this.addClass("disable");
@@ -589,7 +640,9 @@ $(function () {
     });
     
     _page_turner_up.mouseover(function () {
-        $(this).addClass("hover");
+        if (PCL.u.get_timestamp() - _last_page_up > _remove_hover_delay) {
+            $(this).addClass("hover");
+        }
     });
     _page_turner_up.mouseout(function () {
         $(this).removeClass("hover");
@@ -597,7 +650,7 @@ $(function () {
     
     // ----------------------------------
     
-    var _last_page_down;
+    var _last_page_down = PCL.u.get_timestamp() - _remove_hover_delay;
     var _page_down = function (_this) {
         if (PCL.u.get_timestamp() - _last_page_down < _remove_hover_delay) {
             _this.removeClass("hover");
@@ -608,8 +661,28 @@ $(function () {
         _disable_blur();
         
         var _top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        var _to_top = _top + (_height - _turner_height);
-        if (_to_top > (_body_height + PCL.etc_config.page_turner_bottom_padding)) {
+        
+        
+        var _match_line_border = _top + _height - _page_turner_down.outerHeight();
+        var _line_top;
+        var _lines = $(".line");
+        for (var _i = 0; _i < _lines.length; _i++) {
+            _line_top = _lines.eq(_i).offset().top;
+            if (_line_top > _match_line_border) {
+                _i--;
+                //_lines.eq(_i).css("color", "red");
+                _line_top = _lines.eq(_i).offset().top;
+                break;
+            }
+        }
+        //var _interval_height = _line_top - (_page_turner_down.offset().top + _page_turner_down.outerHeight());
+        var _to_top = _line_top - _page_turner_up.outerHeight();
+        
+        //var _to_top = _top + (_height - _turner_height);
+        //var _to_top = _top + _line_height;
+        
+        //console.log([_to_top ,_body_height, _height, PCL.etc_config.page_turner_bottom_padding]);
+        if (_to_top > (_body_height - _height - PCL.etc_config.page_turner_bottom_padding)) {
             _to_top = _body_height;
             _this.addClass("disable");
         }
@@ -626,7 +699,9 @@ $(function () {
     });
     
     _page_turner_down.mouseover(function () {
-        $(this).addClass("hover");
+        if (PCL.u.get_timestamp() - _last_page_down > _remove_hover_delay) {
+            $(this).addClass("hover");
+        }
     });
     _page_turner_down.mouseout(function () {
         $(this).removeClass("hover");

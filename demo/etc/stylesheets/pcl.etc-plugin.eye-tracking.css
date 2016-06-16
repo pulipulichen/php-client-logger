@@ -1,4 +1,8 @@
-body, div, label, span {
+*, body, div, label, span {
     /* 隱藏滑鼠卷軸 */
     cursor:none !important;
+}
+
+body {
+    overflow-y: hidden;
 }

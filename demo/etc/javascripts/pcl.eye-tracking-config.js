@@ -20,7 +20,7 @@ PCL.etc_config = {
     page_turner_page_height: 200,
     page_turner_speed: 1000,
     page_turner_top_padding: 100,
-    page_turner_bottom_padding: 0,
+    page_turner_bottom_padding: 100,
     
     
     // @TODO 正式實驗的時候要註解掉
