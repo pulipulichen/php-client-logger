@@ -144,7 +144,7 @@ $(function () {
     var _mouseleave_delay = 3500;
     var _blur_delay = 2000;
     
-    var _prev_line = true;
+    var _prev_line = false;
     
     var _height = window.innerHeight;
     var doc = document.documentElement;
@@ -153,8 +153,8 @@ $(function () {
         var _this = $(this);
         var _current_top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
         //console.trace([_event.pageY - _current_top, _this.offset().top - _current_top, _height]);
-        if (_prev_line === true && _this.prev().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
-            _this = _this.prev();
+        if (_prev_line === true && _this.next().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
+            _this = _this.next();
         } 
         var _index = _this.parent().children().index(_this);
         _index = "div" + _index;
@@ -214,8 +214,8 @@ $(function () {
     _div.mouseout(function () {
         var _this = $(this);
         var _current_top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        if (_prev_line === true && _this.prev().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
-            _this = _this.prev();
+        if (_prev_line === true && _this.next().length === 1 && (_this.offset().top- _current_top) > (_height / 3)) {
+            _this = _this.next();
         } 
         _this.attr("enter", "false");
     });
@@ -291,7 +291,7 @@ $(function () {
     };
     var _turner_delay = 3000;
     var _remove_hover_delay = 3000;
-    var _turner_height = 400;
+    var _turner_height = 200;
     
     _page_turner_up.mouseover(function () {
         var _this = $(this);

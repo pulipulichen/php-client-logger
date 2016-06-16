@@ -74,6 +74,7 @@ body {
 	height: 100%;
 	-webkit-font-smoothing: antialiased;
 	cursor: default;
+        overflow-x: hidden;
 }
 
 .top{

@@ -1,4 +1,4 @@
 body, div, label, span {
     /* 隱藏滑鼠卷軸 */
-    /*cursor:none !important;*/
+    cursor:none !important;
 }
