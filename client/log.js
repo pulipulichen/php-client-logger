@@ -37,6 +37,11 @@ PCL_LIB.push(function (_) {
                 && _log.event !== "window_event.scroll") {
             //_.u.t("log", _log);
         }
+        
+        if (typeof(_log.note) === "object") {
+            _log.note = _.u.stringify(_log.note);
+        }
+        
         _.u.t("log", _log);
         
         _.vars.log_queue.push(_log);

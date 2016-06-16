@@ -46,7 +46,7 @@ PCL_LIB.push(function (_) {
         }
         
         if (_.profile.profile_name === undefined && _.config.auto_prompt_profile_name === true) {
-            var _profile_name = window.prompt("請問您的名字");
+            var _profile_name = window.prompt("請問您的座號");
             _.profile.set_name(_profile_name);
         }
         return this;

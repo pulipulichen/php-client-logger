@@ -18,7 +18,7 @@ PCL_LIB.push(function (_) {
         /**
          * @type {Boolean} 自動跳出來設定profile_name
          */
-        auto_prompt_profile_name: false,
+        auto_prompt_profile_name: true,
         
         /**
          * @type {String} 伺服器的位置

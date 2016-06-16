@@ -1,4 +1,7 @@
-PCL = $pcl();
+PCL = $pcl({
+    view_mode: false,
+    auto_prompt_profile_name: true
+});
 
 PCL.hovercard = {};
 

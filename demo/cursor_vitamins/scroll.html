@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ETR</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.hovercard.min.js"></script>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<script type="text/javascript">
+/*
+	########  ##       ##     ## ########
+	##     ## ##       ##     ## ##     ##
+	##     ## ##       ##     ## ##     ##
+	########  ##       ##     ## ########
+	##     ## ##       ##     ## ##   ##
+	##     ## ##       ##     ## ##    ##
+	########  ########  #######  ##     ##
+*/
+$(document).ready(function(){
+	var _set_event = function() {
+		var _selector = ".hc-preview";
+		$("label").mouseover(function () {
+			$("span").addClass("blur");
+			$("label").not(this).addClass("blur");
+		});
+
+		$(".hc-preview").mouseleave(function() {
+			$("span").removeClass("blur");
+			$("label").not(this).removeClass("blur");
+		});
+	};
+	if ($(".hc-preview").length > 0) {
+		_set_event();
+	}
+	else {
+		setTimeout(function () {
+			_set_event();
+		}, 500);
+	}
+/*
+	########   #######  ##       ########
+	##     ## ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	########  ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	########   #######  ######## ########
+*/
+	$("#emph").mouseover(function () {
+			$("abbr").addClass("bold");
+		});
+	});
+
+/*
+	 ######   ######  ########   #######  ##       ##
+	##    ## ##    ## ##     ## ##     ## ##       ##
+	##       ##       ##     ## ##     ## ##       ##
+	 ######  ##       ########  ##     ## ##       ##
+	      ## ##       ##   ##   ##     ## ##       ##
+	##    ## ##    ## ##    ##  ##     ## ##       ##
+	 ######   ######  ##     ##  #######  ######## ########
+
+$("document").ready(function() {
+	$('.top-title').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".middle").offset().top
+		}, 1500);
+	});
+
+	$('.middle-title').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".bottom").offset().top
+		}, 1500);
+	});
+	$('.middle-title-back').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".top").offset().top
+		}, 1500);
+	});
+
+	$('.bottom-title').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".top").offset().top
+		}, 1500);
+	});
+	$('.bottom-title-back').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".middle").offset().top
+		}, 1500);
+	});
+});
+*/
+
+/*
+	##     ##  ######              ##  ######
+	##     ## ##    ##             ## ##    ##
+	##     ## ##                   ## ##
+	######### ##        ###        ##  ######
+	##     ## ##             ##    ##       ##
+	##     ## ##    ##       ##    ## ##    ##
+	##     ##  ######         ######   ######
+*/
+$(window).load(function(){
+	var vitamins = "維他命",
+		health = '健康',
+		vitamin_A = '維他命 A',
+		vitamin_K = '維他命 K',
+		vitamin_C = '維他命 C',
+		colds = '感冒',
+		our_body = '使我們保持健康的',
+		blood = '血液',
+		NF = '自然的食物',
+		vitamins_13 = '13種維他命';
+		FFV = '魚、水果、蔬菜',
+		carrots = '紅蘿蔔或高麗菜',
+
+	$('#vitamins').hovercard({
+		detailsHTML: vitamins,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'Vitamins.png'
+	});
+
+	$('#health').hovercard({
+		detailsHTML: health,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'heal.png'
+	});
+
+	$('#vitamin_A').hovercard({
+		detailsHTML: vitamin_A,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'vitamins_A.gif'
+	});
+
+	$('#vitamin_K').hovercard({
+		detailsHTML: vitamin_K,
+		//width: 360,
+		delay: 1500,
+		cardImgSrc: 'K.jpg'
+	});
+	
+	$('#blood').hovercard({
+		detailsHTML: blood,
+		//width: 370,
+		delay: 1500,
+		cardImgSrc: 'blood.png'
+	});
+
+	$('#vitamin_C').hovercard({
+		detailsHTML: vitamin_C,
+		//width: 390,
+		delay: 1500,
+		cardImgSrc: 'C.png'
+	});
+
+	$('#colds').hovercard({
+		detailsHTML: colds,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'colds.png'
+	});
+
+	$('#vitamins_13').hovercard({
+		detailsHTML: vitamins_13,
+		width: 300,
+		delay: 1500,
+		cardImgSrc: 'Vitamins.png'
+	});
+
+	$('#our_body').hovercard({
+		detailsHTML: our_body,
+		width: 300,
+		delay: 1500,
+		cardImgSrc: 'our_body.png'
+	});
+
+	$('#NF').hovercard({
+		detailsHTML: NF,
+		delay: 1500,
+		width: 280,
+		cardImgSrc: 'NF.png'
+	});
+
+	$('#FFV').hovercard({
+		detailsHTML: FFV,
+		width: 350,
+		delay: 1500,
+		cardImgSrc: 'FFV.png'
+	});
+
+	$('#carrots').hovercard({
+		detailsHTML: carrots,
+		width: 325,
+		delay: 1500,
+		cardImgSrc: 'carrots.png'
+	});
+
+});//]]> 
+</script>
+
+<style>
+
+.top, .middle, .bottom{
+	padding: 3rem;
+	height: 42rem;
+	background-color: #EEE;
+}
+.contain{
+	text-align: left;
+	margin-right: 1rem;
+	margin-top: 0rem;
+	background-color: #FFF;
+    padding: 1.5rem;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.middle-title-back, .bottom-title-back{
+	left: 1rem;
+}
+
+.middle-title-back{
+	top: 51rem;
+}
+
+.bottom-title-back{
+	top: 100.5rem;
+}
+
+.middle-title-back, .bottom-title-back, .top-title, .middle-title, .bottom-title{
+	text-align:center;
+	font-size: 4rem;
+	font-weight: bold;
+	position: absolute;
+	width: 6rem;
+	height: 6rem;
+	background-color:rgba(128,128,128,0.5);
+	/*
+	opacity: 0;
+	*/
+}
+
+.top-title, .middle-title, .bottom-title{
+	right: 1.5rem;
+}
+.top-title{
+	top: 41.5rem;
+}
+.middle-title{
+	top: 91.5rem;
+}
+.bottom-title{
+	top: 142rem;
+}
+div.contain > div {
+	width: 100%;
+	line-height: 7rem;
+	border: 1px solid green;
+}
+body {
+	font-family:Sans-serif;
+	font-size:3rem;
+
+	padding: 0;
+	text-align: left;
+	position: relative;
+	margin: 0;
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
+
+	cursor: default;
+}
+.top{
+	padding: 5rem 7rem;
+}
+label{
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<noscript>
+	<div id="noscript">You need JavaScript enabled to view most of the demos!</div>
+</noscript>
+
+<div id="container">
+	<div id="inner_wrap">
+		<div class="main">
+			<div class="top">
+				<div class="contain">
+					<div class="line">
+						<label id="vitamins">Vitamins</label>
+						<span> are important to our health.</span>
+					</div>
+					<div class="line">
+						<span>Do you know what vitamins are for</span>
+					</div>
+					<div class="line">
+						<span>and how many kinds of vitamins there are?</span>
+					</div>
+					<div class="line">
+						<span>The answer to the first question is that vitamins</span>
+					</div>
+					<div class="line">
+						<span>are good things in food that can </span>
+						<label id="our_body">keep us healthy</label>
+						<span>.</span>
+					</div>
+					<div class="line">
+						<span>Without taking enough vitamins,</span>
+					</div>
+					<div class="line">
+						<span>our body would go wrong.</span>
+					</div>
+					<div class="line">
+						<span>For example, if we are short of </span>
+						<label id="vitamin_A">vitamin A</label>
+						<span>,</span>
+					</div>
+					<div class="line">
+						<span>we won't have good eyes, beautiful skin,</span>
+					</div>
+					<div class="line">
+						<span>and strong teeth.</span>
+					</div>
+					<div class="line">
+						<span>And </span>
+						<label id="vitamin_K">vitamin K</label>
+						<span> can stop us from losing</span>
+					</div>
+					<div class="line">
+						<span>too much </span>
+						<label id="blood">blood</label>
+						<span> when we get hurt.</span>
+					</div>
+					<div class="line">
+						<span>Taking </span>
+						<label id="vitamin_C">vitamin C</label>
+						<span> every day</span>
+					</div>
+					<div class="line">
+						<span>can keep us away from </span>
+						<label id="colds">colds</label>
+						<span>.</span>
+					</div>
+					<div class="line">
+						<span>About the second question,</span>
+					</div>
+					<div class="line">
+						<span>doctors find there are </span>
+						<label id="vitamins_13">13 kinds of vitamins</label>
+						<span>,</span>
+					</div>
+					<div class="line">
+						<span>and they play different roles in our body.</span>
+					</div>
+					<div class="line">
+						<span>The best way to get them is from </span>
+						<label id="NF">natural food</label>
+						<span>,</span>
+					</div>
+					<div class="line">
+						<span> such as </span>
+						<label id="FFV">fish, fruit, and vegetables</label>
+						<span>.</span>
+					</div>
+					<div class="line">
+						<span>So next time when your mom asks you</span>
+					</div>
+					<div class="line">
+						<span>to eat </span>
+						<label id="carrots">carrots or cabbages</label>
+						<span>,</span>
+					</div>
+					<div class="line">
+						<span>don't run away!</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

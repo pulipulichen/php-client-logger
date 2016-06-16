@@ -117,9 +117,9 @@ label {
 img { behavior: url(lib/iepngfix.htc); }
 
 .main-image {
-    position:absolute;
-    top:-1000px;
-    width:400px;
+  position:absolute;
+  top:-1000px;
+  width:400px;
 }
 
 /* ELEMENT */
@@ -128,10 +128,10 @@ body {
 	background-color: #ffffff;
 	text-align: center;
 	color: #333;
-	font-size: 3em;
+	font-size: 16px;
 	font-weight: normal;
 	font-style: normal;
-	line-height: 1.5em;
+	line-height: 1.5;
 	font-family :
 	Meiryo,
 	'メイリオ',

@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Reading</title>
+<script type="text/javascript" src="javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.hovercard.js"></script>
+<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
+<link rel="stylesheet" href="stylesheets/style.css" type="text/css" charset="utf-8" />
+
+<link rel="stylesheet" href="stylesheets/pcl.etc-plugin.eye-tracking.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" src="/php-client-logger/pcl.js"></script>
+<script type="text/javascript" src="javascripts/pcl.etc-plugin.js"></script>
+
+<script type="text/javascript" src="javascripts/etc.js"></script>
+<script type="text/javascript">
+$(window).load(function(){
+	var anot1 = "水",
+		about37blog = '地球',
+		zootopia = '沙漠中的動、植物',
+		desert = '沙漠',
+		sand = '地面上有一大堆沙子的地方',
+		sc = '防曬乳液來保護肌膚',
+		Sahara = '沙漠的陽光非常強烈',
+		bring = '攜帶',
+		own_way = '有它們自己的辦法',
+		keep_alive = '生存之道',
+		weather = '天氣變化劇烈',
+		daytime = '白天',
+
+		die = '可能會因身體失去太多水分而喪命',
+		temperature = '氣溫的劇烈改變',
+		leave = '在植物上留下一些水分';
+
+        var _delay_time = 500;
+	// -------------------------
+	
+	$('#anot1').hovercard({
+		detailsHTML: anot1,
+		width: 200,
+		delay: _delay_time,
+		cardImgSrc: 'water_Konstantin Stepanov.jpg',
+		
+		// ----------------------------------------
+		// 
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+		// ----------------------------------------
+	});
+
+	$('#about37blog').hovercard({
+		detailsHTML: about37blog,
+		width: 200,
+		delay: _delay_time,
+		cardImgSrc: 'http://bestanimations.com/Earth&Space/Earth/earth-spinning-rotating-animation-24.gif',
+		
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#zootopia').hovercard({
+		detailsHTML: zootopia,
+		width: 600,
+		delay: _delay_time,
+		cardImgSrc: 'camels.gif',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#desert').hovercard({
+		detailsHTML: desert,
+		width: 200,
+		delay: _delay_time,
+		cardImgSrc: 'dr.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+	
+	$('#sand').hovercard({
+		detailsHTML: sand,
+		width: 570,
+		delay: _delay_time,
+		cardImgSrc: 'sand.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#Sahara').hovercard({
+		detailsHTML: Sahara,
+		width: 650,
+		delay: _delay_time,
+		cardImgSrc: 'Sahara_desert.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+        
+	$('#sc').hovercard({
+		detailsHTML: sc,
+		width: 600,
+		delay: _delay_time,
+		cardImgSrc: 'sun_cream.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#bring').hovercard({
+		detailsHTML: bring,
+                width: 200,
+		delay: _delay_time,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+        
+	$('#die').hovercard({
+		detailsHTML: die,
+		delay: _delay_time,
+		width: 950,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+
+
+	$('#own_way').hovercard({
+		detailsHTML: own_way,
+		width: 385,
+		delay: _delay_time,
+		cardImgSrc: 'way.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#keep_alive').hovercard({
+		detailsHTML: keep_alive,
+                width: 200,
+		delay: _delay_time,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#weather').hovercard({
+		detailsHTML: weather,
+		delay: _delay_time,
+		width: 500,
+		cardImgSrc: 'desert.gif',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#daytime').hovercard({
+		detailsHTML: daytime,
+		width: 300,
+		delay: _delay_time,
+		cardImgSrc: 'daytimes.gif',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#temperature').hovercard({
+		detailsHTML: temperature,
+		width: 650,
+		delay: _delay_time,
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+	$('#leave').hovercard({
+		detailsHTML: leave,
+		width: 550,
+		delay: _delay_time,
+		cardImgSrc: 'leave.jpg',
+                
+		// ----------------------------------------
+		onHoverIn: function () {
+                    PCL.hovercard.on_hover_in(_delay_time, this);
+		},
+		onHoverOut: function () {
+                    PCL.hovercard.on_hover_out(_delay_time, this);
+		}
+	});
+
+});//]]> 
+</script>
+<link rel="stylesheet" type="text/css" href="stylesheets/etc.css">
+</head>
+<body>
+<noscript>
+	<div id="noscript">You need JavaScript enabled to view most of the demos!</div>
+</noscript>
+
+<div id="container">
+	<div id="inner_wrap">
+		<div class="main">
+			<div class="top">
+				<div class="contain">
+                                    <div class="line">
+                                        <span><abbr>Without</abbr> </span>
+                                        <label id="anot1"><abbr>water</abbr></label>
+                                        <span>, </span>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span>there will be <abbr>no life</abbr> on </span>
+                                        <label id="about37blog"><abbr>earth</abbr></label><span>.</span>
+                                    </div>
+                                    <div class="line">
+                                        <span>It is <abbr>especially true</abbr> for </span>
+                                        <label id="zootopia">animals and plants in deserts</label><span>.</span>
+                                    </div>
+                                    <div class="line">
+                                        <span>A </span>
+                                        <label id="desert">desert</label>
+                                        <span> is a place where there is <abbr>little water</abbr>, </span>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span>and there is </span>
+                                        <label id="sand">a lot of <abbr>sand on the ground</abbr></label>
+                                        <span>.</span>
+                                    </div>
+                                    <div class="line">
+                                        <label id="Sahara">The <abbr>sun in deserts</abbr> is so <abbr>strong</abbr></label>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span> that we have to put on </span>
+                                        <label id="sc"><abbr>sun cream</abbr> to <abbr>protect</abbr> our <abbr>skin</abbr></label>
+                                        <span>.</span>
+                                    </div>
+                                    <div class="line">
+                                        <span>We must </span>
+                                        <label id="bring">bring</label><span> a lot of water with us, </span>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span>or we </span>
+                                        <label id="die">may <abbr>die</abbr> of <abbr>losing too much water</abbr> from our body</label><span>.</span>
+                                    </div>
+                                    <div class="line">
+                                        <span>Animals and plants in deserts </span>
+                                        <label id="own_way">have their <abbr>own way</abbr></label>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span> to <abbr>get water</abbr> and </span>
+                                        <label id="keep_alive">keep alive</label><span>.</span>
+                                    </div>
+                                    <div class="line line">
+                                        <span>Because the </span>
+                                        <label id="weather">weather changes <abbr>greatly</abbr></label>
+                                        <span> in <abbr>one day</abbr>,</span>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span> everything is <abbr>hot and dry</abbr> in the </span>
+                                        <label id="daytime"><abbr>daytime</abbr></label><span>,</span>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span>while the <abbr>night</abbr> is <abbr>very cold</abbr>.</span>
+                                    </div>
+                                    <div class="line">
+                                        <label id="temperature">The <abbr>great change</abbr> in <abbr>temperature</abbr></label>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span> can </span>
+                                        <label id="leave"><abbr>leave</abbr> some <abbr>water on plants</abbr></label>
+                                        <span> in the <abbr>early morning</abbr>,</span>
+                                    </div>
+                                    <div class="padding-left line">
+                                        <span>and animals <abbr>eat</abbr> these 
+                                            <abbr>plants with water</abbr> 
+                                            on them.
+                                        </span>
+                                    </div>
+                                    <div class="line">
+                                        <span>That is how they 
+                                            <abbr>stay alive</abbr>
+                                            <bdi id="emph"> in deserts.</bdi>
+                                        </span>
+                                    </div>
+			</div> <!-- <div class="contain"> -->
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>
