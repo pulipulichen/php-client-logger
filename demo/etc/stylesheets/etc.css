@@ -135,9 +135,11 @@ div.hc-details {
     text-align: justify !important;
     font-size: 2rem !important;
     color: blue !important;
+    z-index: -1;    
+}
+div[display_hover] div.hc-details {
     z-index: 0;    
 }
-
 
 .hc-details img {
     height: 100px;
@@ -146,6 +148,9 @@ div.hc-details {
     border: 1px solid black;
     box-shadow: 1px 1px 1px #888;
     background-color: white;
+}
+
+div[display_hover] .hc-details img {
     position: relative;
     z-index: 201;
 }

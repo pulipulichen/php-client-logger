@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Reading</title>
+<title>Desert</title>
 <script type="text/javascript" src="javascripts/jquery.min.js"></script>
 <script type="text/javascript" src="javascripts/jquery.hovercard.js"></script>
 <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="stylesheets/pcl.etc-plugin.eye-tracking.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" src="/php-client-logger/pcl.js"></script>
-<script type="text/javascript" src="javascripts/pcl.demo-plugin.js"></script>
+<script type="text/javascript" src="javascripts/pcl.eye-tracking-config.js"></script>
+<script type="text/javascript" src="javascripts/pcl.etc-plugin.js"></script>
 
-<script type="text/javascript" src="javascripts/etc.js"></script>
 <script type="text/javascript">
 $(window).load(function(){
 	var anot1 = "水",
@@ -34,14 +34,14 @@ $(window).load(function(){
 		temperature = '氣溫的劇烈改變',
 		leave = '在植物上留下一些水分';
 
-        var _delay_time = 500;
+        var _delay_time = PCL.etc_config.hovercard_delay_time;
 	// -------------------------
 	
 	$('#anot1').hovercard({
 		detailsHTML: anot1,
 		width: 200,
 		delay: _delay_time,
-		cardImgSrc: 'water_Konstantin Stepanov.jpg',
+		cardImgSrc: 'desert/water_Konstantin Stepanov.jpg',
 		
 		// ----------------------------------------
 		// 
@@ -58,7 +58,7 @@ $(window).load(function(){
 		detailsHTML: about37blog,
 		width: 200,
 		delay: _delay_time,
-		cardImgSrc: 'http://bestanimations.com/Earth&Space/Earth/earth-spinning-rotating-animation-24.gif',
+		cardImgSrc: 'desert/http://bestanimations.com/Earth&Space/Earth/earth-spinning-rotating-animation-24.gif',
 		
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -73,7 +73,7 @@ $(window).load(function(){
 		detailsHTML: zootopia,
 		width: 600,
 		delay: _delay_time,
-		cardImgSrc: 'camels.gif',
+		cardImgSrc: 'desert/camels.gif',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -88,7 +88,7 @@ $(window).load(function(){
 		detailsHTML: desert,
 		width: 200,
 		delay: _delay_time,
-		cardImgSrc: 'dr.jpg',
+		cardImgSrc: 'desert/dr.jpg',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -103,7 +103,7 @@ $(window).load(function(){
 		detailsHTML: sand,
 		width: 570,
 		delay: _delay_time,
-		cardImgSrc: 'sand.jpg',
+		cardImgSrc: 'desert/sand.jpg',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -118,7 +118,7 @@ $(window).load(function(){
 		detailsHTML: Sahara,
 		width: 650,
 		delay: _delay_time,
-		cardImgSrc: 'Sahara_desert.jpg',
+		cardImgSrc: 'desert/Sahara_desert.jpg',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -133,7 +133,7 @@ $(window).load(function(){
 		detailsHTML: sc,
 		width: 600,
 		delay: _delay_time,
-		cardImgSrc: 'sun_cream.jpg',
+		cardImgSrc: 'desert/sun_cream.jpg',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -178,7 +178,7 @@ $(window).load(function(){
 		detailsHTML: own_way,
 		width: 385,
 		delay: _delay_time,
-		cardImgSrc: 'way.jpg',
+		cardImgSrc: 'desert/way.jpg',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -207,7 +207,7 @@ $(window).load(function(){
 		detailsHTML: weather,
 		delay: _delay_time,
 		width: 500,
-		cardImgSrc: 'desert.gif',
+		cardImgSrc: 'desert/desert.gif',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -222,7 +222,7 @@ $(window).load(function(){
 		detailsHTML: daytime,
 		width: 300,
 		delay: _delay_time,
-		cardImgSrc: 'daytimes.gif',
+		cardImgSrc: 'desert/daytimes.gif',
                 
 		// ----------------------------------------
 		onHoverIn: function () {
@@ -251,7 +251,7 @@ $(window).load(function(){
 		detailsHTML: leave,
 		width: 550,
 		delay: _delay_time,
-		cardImgSrc: 'leave.jpg',
+		cardImgSrc: 'desert/leave.jpg',
                 
 		// ----------------------------------------
 		onHoverIn: function () {

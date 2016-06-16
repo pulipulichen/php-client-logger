@@ -123,7 +123,7 @@
 
             //toggle hover card details on hover
             obj.closest(".hc-preview").hover(function () {
-                    
+                return;
                 var $this = $(this);
                 adjustToViewPort($this);
 
