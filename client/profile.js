@@ -20,7 +20,7 @@ PCL_LIB.push(function (_) {
     };
     
     _.profile.set_default_name = function (_name) {
-        _.vars.profile.profile_name = _name;
+        _.vars.profile.profile_name = _name + "";
         _.u.cookie.set("profile", _.vars.profile);
         return this;
     };

@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ETR</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.hovercard.min.js"></script>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+<script type="text/javascript">
+/*
+	########  ##       ##     ## ########
+	##     ## ##       ##     ## ##     ##
+	##     ## ##       ##     ## ##     ##
+	########  ##       ##     ## ########
+	##     ## ##       ##     ## ##   ##
+	##     ## ##       ##     ## ##    ##
+	########  ########  #######  ##     ##
+*/
+$(document).ready(function(){
+	var _set_event = function() {
+		var _selector = ".hc-preview";
+		$("label").mouseover(function () {
+			$("span").addClass("blur");
+			$("label").not(this).addClass("blur");
+		});
+
+		$(".hc-preview").mouseleave(function() {
+			$("span").removeClass("blur");
+			$("label").not(this).removeClass("blur");
+		});
+	};
+	if ($(".hc-preview").length > 0) {
+		_set_event();
+	}
+	else {
+		setTimeout(function () {
+			_set_event();
+		}, 500);
+	}
+/*
+	########   #######  ##       ########
+	##     ## ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	########  ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	##     ## ##     ## ##       ##     ##
+	########   #######  ######## ########
+*/
+	$("#emph").mouseover(function () {
+			$("abbr").addClass("bold");
+		});
+	});
+
+/*
+	 ######   ######  ########   #######  ##       ##
+	##    ## ##    ## ##     ## ##     ## ##       ##
+	##       ##       ##     ## ##     ## ##       ##
+	 ######  ##       ########  ##     ## ##       ##
+	      ## ##       ##   ##   ##     ## ##       ##
+	##    ## ##    ## ##    ##  ##     ## ##       ##
+	 ######   ######  ##     ##  #######  ######## ########
+
+$("document").ready(function() {
+	$('.top-title').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".middle").offset().top
+		}, 1500);
+	});
+
+	$('.middle-title').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".bottom").offset().top
+		}, 1500);
+	});
+	$('.middle-title-back').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".top").offset().top
+		}, 1500);
+	});
+
+	$('.bottom-title').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".top").offset().top
+		}, 1500);
+	});
+	$('.bottom-title-back').mouseover(function(){
+		$('html, body').animate({
+			scrollTop: $(".middle").offset().top
+		}, 1500);
+	});
+});
+*/
+
+/*
+	##     ##  ######              ##  ######
+	##     ## ##    ##             ## ##    ##
+	##     ## ##                   ## ##
+	######### ##        ###        ##  ######
+	##     ## ##             ##    ##       ##
+	##     ## ##    ##       ##    ## ##    ##
+	##     ##  ######         ######   ######
+*/
+$(window).load(function(){
+	var anot1 = "水",
+	about37blog = '地球',
+	zootopia = '沙漠中的動、植物',
+	desert = '沙漠',
+	sand = '地面上',
+	sc = '防曬乳液',
+	Sahara = '沙漠的陽光非常強烈',
+	bring = '攜帶',
+	own_way = '有它們自己的辦法',
+	keep_alive = '生存之道',
+	weather = '天氣變化劇烈',
+	daytime = '白天',
+
+	die = '可能因...而喪命',
+	temperature = '氣溫的劇烈改變',
+	leave = '留下一些水分';
+
+
+	$('#vitamins').hovercard({
+		detailsHTML: vitamins,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'Vitamins.png'
+	});
+
+	$('#health').hovercard({
+		detailsHTML: health,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'heal.png'
+	});
+
+	$('#vitamin_A').hovercard({
+		detailsHTML: vitamin_A,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'vitamins_A.gif'
+	});
+
+	$('#vitamin_K').hovercard({
+		detailsHTML: vitamin_K,
+		//width: 360,
+		delay: 1500,
+		cardImgSrc: 'K.jpg'
+	});
+	
+	$('#blood').hovercard({
+		detailsHTML: blood,
+		//width: 370,
+		delay: 1500,
+		cardImgSrc: 'blood.png'
+	});
+
+	$('#vitamin_C').hovercard({
+		detailsHTML: vitamin_C,
+		//width: 390,
+		delay: 1500,
+		cardImgSrc: 'C.png'
+	});
+
+	$('#colds').hovercard({
+		detailsHTML: colds,
+		//width: 400,
+		delay: 1500,
+		cardImgSrc: 'colds.png'
+	});
+
+	$('#vitamins_13').hovercard({
+		detailsHTML: vitamins_13,
+		width: 300,
+		delay: 1500,
+		cardImgSrc: 'Vitamins.png'
+	});
+
+	$('#our_body').hovercard({
+		detailsHTML: our_body,
+		width: 300,
+		delay: 1500,
+		cardImgSrc: 'our_body.png'
+	});
+
+	$('#NF').hovercard({
+		detailsHTML: NF,
+		delay: 1500,
+		width: 280,
+		cardImgSrc: 'NF.png'
+	});
+
+	$('#FFV').hovercard({
+		detailsHTML: FFV,
+		width: 350,
+		delay: 1500,
+		cardImgSrc: 'FFV.png'
+	});
+
+	$('#carrots').hovercard({
+		detailsHTML: carrots,
+		width: 325,
+		delay: 1500,
+		cardImgSrc: 'carrots.png'
+	});
+
+});//]]> 
+</script>
+
+<style>
+
+.top, .middle, .bottom{
+	padding: 3rem;
+	height: 42rem;
+	background-color: #EEE;
+}
+.contain{
+	text-align: left;
+	margin-right: 1rem;
+	margin-top: 0rem;
+	background-color: #FFF;
+    padding: 1.5rem;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.middle-title-back, .bottom-title-back{
+	left: 1rem;
+}
+
+.middle-title-back{
+	top: 51rem;
+}
+
+.bottom-title-back{
+	top: 100.5rem;
+}
+
+.middle-title-back, .bottom-title-back, .top-title, .middle-title, .bottom-title{
+	text-align:center;
+	font-size: 4rem;
+	font-weight: bold;
+	position: absolute;
+	width: 6rem;
+	height: 6rem;
+	background-color:rgba(128,128,128,0.5);
+	/*
+	opacity: 0;
+	*/
+}
+
+.top-title, .middle-title, .bottom-title{
+	right: 1.5rem;
+}
+.top-title{
+	top: 41.5rem;
+}
+.middle-title{
+	top: 91.5rem;
+}
+.bottom-title{
+	top: 142rem;
+}
+div.contain > div {
+	width: 100%;
+	line-height: 7rem;
+	border: 1px solid green;
+}
+body {
+	font-family:Sans-serif;
+	font-size:3rem;
+
+	padding: 0;
+	text-align: left;
+	position: relative;
+	margin: 0;
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
+
+	cursor: default;
+}
+.top{
+	padding: 5rem 7rem;
+}
+label{
+	text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<noscript>
+	<div id="noscript">You need JavaScript enabled to view most of the demos!</div>
+</noscript>
+
+<div id="container">
+	<div id="inner_wrap">
+		<div class="main">
+			<div class="top">
+				<div class="contain">
+					<div class="line">
+						<span><abbr>Without </abbr></span>
+						<label id="anot1"><abbr>water</abbr></label>
+						<span>,</span>
+					</div>
+					<div class="line">
+						<span>there will be <abbr>no life</abbr> on </span>
+						<label id="about37blog"><abbr>earth</abbr></label>
+						<span> .</span>
+					</div>
+					<div class="line">
+						<span>It is <abbr>especially true</abbr> for </span>
+					</div>
+					<div class="line">
+						<label id="zootopia">animals and plants  in deserts</label>
+						<span>.</span>
+					</div>
+					<div class="line">
+						<span>A </span>
+						<label id="desert"><abbr>desert</abbr></label>
+						<span> is a place where there is <abbr>little water</abbr>,</span>
+					</div>
+					<div class="line">
+						<span> and there is <abbr>a lot of sand</abbr> </span>
+						<label id="sand">on the ground.</label>
+					</div>
+					<div class="line">
+						<label id="Sahara">The <abbr>sun in deserts</abbr> is so <abbr>strong</abbr></label>
+						<span>that</span>
+					</div>
+					<div class="line">
+						<span> we have to put on</span>
+						<label id="sc"><abbr>sun cream</abbr></label>
+					</div>
+					<div class="line">
+						<span> to <abbr>protect</abbr> our <abbr>skin</abbr>.</span>
+					</div>
+					<div class="line">
+						<span>We must </span>
+						<label id="bring"><abbr>bring</abbr></label>
+						<span>  <abbr>a lot of water</abbr> with us,</span>
+					</div>
+					<div class="line">
+						<span>or we</span>
+						<label id="die">may <abbr>die</abbr> of</label>
+						<span> <abbr>losing</abbr> too much <abbr>water</abbr></span>
+					</div>
+					<div class="line">
+						<span><abbr>from</abbr> our <abbr>body</abbr>.</span>
+					</div>
+					<div class="line">
+						<span><abbr>Animals</abbr> and <abbr>plants</abbr> <abbr>in deserts</abbr></span>
+					</div>
+					<div class="line">
+						<label id="own_way">have <abbr>their own way</abbr></label>
+						<span>to <abbr>get water</abbr> </span>
+					</div>
+					<div class="line">
+						<label id="keep_alive"> and <abbr>keep alive</abbr>.</label>
+					</div>
+					<div class="line">
+						<span>Because the </span>
+						<label id="weather"><abbr>weather</abbr> there <abbr>changes greatly</abbr></label>
+					</div>
+					<div class="line">
+						<span>in <abbr>one day</abbr>,</span>
+					</div>
+					<div class="line">
+						<span><abbr>everything</abbr> is </span>
+					</div>
+					<div class="line">
+						<label id="daytime"> <abbr>hot and dry in</abbr> the <abbr>daytime</abbr>,</label>
+					</div>
+					<div class="line">
+						<label id="temperature">The <abbr>great change</abbr> in <abbr>temperature</abbr></label>
+					</div>
+					<div class="line">
+						<span>can</span>
+						<label id="leave"><abbr>leave</abbr> some <abbr>water</abbr></label>
+						 <span><abbr>on plants</abbr></span>
+					</div>
+					<div class="line">
+						<span>in the <abbr>early morning</abbr>,</span>
+					</div>
+					<div class="line">
+						<span>and <abbr>animals eat</abbr> these <abbr>plants</abbr> </span>
+					</div>
+					<div class="line">
+						<span><abbr>with water</abbr> on them.</span>
+					</div>
+					<div class="line">
+						<span>That is how <abbr>they stay alive</abbr> <bdi id="emph">in deserts.</bdi></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -218,8 +218,16 @@ PCL_LIB.push(function (_) {
     };
     
     _.u.get_xpath = function ( _element ) {
+        if (_element === undefined) {
+            return;
+        }
+        
         if (typeof(_element.target) === "object") {
             _element = _element.target;
+        }
+        
+        if (typeof(_element.nodeType) !== "number") {
+            return;
         }
         
         var _xpath = '';
@@ -332,9 +340,13 @@ PCL_LIB.push(function (_) {
         }
         
         var _log = {
-            event: _event_name,
-            xpath: _.u.get_xpath(_event)
+            event: _event_name
         };
+        
+        var _xptah = _.u.get_xpath(_event);
+        if (typeof(_xptah) === "string") {
+            _log.xpath = _xptah;
+        }
         
         if (_event !== undefined && typeof(_event.pageX) === "number") {
             _log.x = _event.pageX;

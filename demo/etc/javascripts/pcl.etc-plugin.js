@@ -98,8 +98,10 @@ PCL.mouseover = function (_event_name, _element, _enable_time, _min_time, _callb
 //    var _index = 0;
 //    var _timer = {};
     
-    _element.mouseover(function () {
+    _element.mouseover(function (_event) {
+        
         var _this = $(this);
+        _this.event = _event;
         
 //        var _timer_index = _this.attr("pcl-mouseover-index");
 //        if (_timer_index === undefined) {
@@ -130,7 +132,7 @@ PCL.mouseover = function (_event_name, _element, _enable_time, _min_time, _callb
             _this.removeAttr(_prefix + "set_timer");
             
             if (_sum > _min_time) {
-                _callback(_this);
+                _callback(_this, _this.event);
             }
         }, _enable_time);
     });
@@ -167,9 +169,9 @@ PCL.mouseout = function (_event_name, _element, _enable_time, _min_time, _callba
 //    var _index = 0;
 //    var _timer = {};
     
-    _element.mouseout(function () {
+    _element.mouseout(function (_event) {
         var _this = $(this);
-        
+        _this.event = _event;
 //        var _timer_index = _this.attr("pcl-mouseover-index");
 //        if (_timer_index === undefined) {
 //            _this.attr("pcl-mouseover-index", _index);
@@ -199,7 +201,7 @@ PCL.mouseout = function (_event_name, _element, _enable_time, _min_time, _callba
             _this.removeAttr(_prefix + "set_timer");
             
             if (_sum > _min_time) {
-                _callback(_this);
+                _callback(_this, _event);
             }
         }, _enable_time);
     });
@@ -475,12 +477,40 @@ $(function () {
     
     PCL.mouseout("on_hover_out", _div, _mouseover_delay, _mouseover_delay*0.5, _mouseout_callback);
     
+    var _hover_timer = {};
+    
     var _on_hover_in = function (_this) {
-        _this.find(".hc-details").addClass("hovercard-display");
+        if (_this.find(".hc-details").length > 0) {
+            _this.find(".hc-details").addClass("hovercard-display");
+            
+            var _log = PCL.u.create_mouse_log(_this.event, "etc.hovercard.on_hover_in");
+            _log.aoi = _get_line_index(_this);
+            _hover_timer[_log.aoi] = PCL.u.get_timestamp();
+            
+            if (PCL.etc_config.enable_log) {
+                PCL.log.add(_log);
+            }
+        }
+        
     };
     
     var _on_hover_out = function (_this) {
-        _this.find(".hc-details.hovercard-display").removeClass("hovercard-display");
+        if (_this.find(".hc-details.hovercard-display").length > 0) {
+            _this.find(".hc-details.hovercard-display").removeClass("hovercard-display");
+            
+            var _log = PCL.u.create_mouse_log(_this.event, "etc.hovercard.on_hover_out");
+            _log.aoi = _get_line_index(_this);
+            if (typeof(_hover_timer[_log.aoi]) === "number") {
+                //_hover_timer[_log.aoi] = PCL.u.get_timestamp();
+                var _interval = PCL.u.get_timestamp() - _hover_timer[_log.aoi];
+                _log.note = {hover_interval: _interval};
+                _hover_timer[_log.aoi] = undefined;
+            }
+            
+            if (PCL.etc_config.enable_log) {
+                PCL.log.add(_log);
+            }
+        }
     };
     
     // --------------------------------------------
@@ -499,6 +529,9 @@ $(function () {
     PCL.mouseover( "blur", _div, _blur_delay, _blur_delay*0.5, function (_this) {
         _enable_blur(_this);        
     });
+    
+    var _last_blur_timer = undefined;
+    var _last_blur_aoi;
     
     var _enable_blur = function (_this) {
         //if (_blur_enabled === true) {
@@ -533,12 +566,45 @@ $(function () {
             _prev_line.find(".blur").removeClass("blur");
         }
         
+        var _log = PCL.u.create_mouse_log(_this.event, "etc.blur_enable");
+        _log.aoi = _get_line_index(_this);
+        _last_blur_aoi = _log.aoi;
+        if (_last_blur_timer !== undefined) {
+            var _interval = PCL.u.get_timestamp() - _last_blur_timer;
+            _log.note = {blur_interval: _interval};
+        }
+        
+        if (PCL.etc_config.enable_log) {
+            PCL.log.add(_log);
+        }
+        
+        _last_blur_timer = PCL.u.get_timestamp();
+        
         _blur_enabled = true;
     };
     
     _disable_blur = function () {
         $(".blur").removeClass("blur");
         _blur_enabled = false;
+        
+        var _log = {
+            event: "etc.blur.disable",
+            aoi: _last_blur_aoi
+        };
+        if (_last_blur_timer !== undefined) {
+            var _interval = PCL.u.get_timestamp() - _last_blur_timer;
+            _log.note = {blur_interval: _interval};
+            _last_blur_timer = undefined;
+        }
+        
+        if (PCL.etc_config.enable_log) {
+            PCL.log.add(_log);
+        }
+    };
+    
+    var _get_line_index = function (_this) {
+        var _index = _this.parent().children().index(_this);
+        return "line" + _index;
     };
     
 //    _div.mouseout(function () {
@@ -631,6 +697,9 @@ $(function () {
             _this.removeClass("hover");
         }
         _scrollTo(document.body, _to_top, PCL.etc_config.page_turner_speed);
+        if (PCL.etc_config.enable_log) {
+            PCL.log.add(PCL.u.create_mouse_log(_this.event, "etc.page_up"));
+        }
         
         _last_page_up = PCL.u.get_timestamp();
     };
@@ -651,7 +720,7 @@ $(function () {
     // ----------------------------------
     
     var _last_page_down = PCL.u.get_timestamp() - _remove_hover_delay;
-    var _page_down = function (_this) {
+    var _page_down = function (_this, _event) {
         if (PCL.u.get_timestamp() - _last_page_down < _remove_hover_delay) {
             _this.removeClass("hover");
             return;
@@ -690,6 +759,11 @@ $(function () {
             _this.removeClass("hover");
         }
         _scrollTo(document.body, _to_top, PCL.etc_config.page_turner_speed);
+        
+        if (PCL.etc_config.enable_log) {
+            PCL.log.add(PCL.u.create_mouse_log(_this.event, "etc.page_down"));
+        }
+        
         
         _last_page_down = PCL.u.get_timestamp();
     };

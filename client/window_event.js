@@ -15,9 +15,9 @@ PCL_LIB.push(function (_) {
             _.window_event.unload(_event);
         });
         
-        $(window).scroll(function () {
-            _.window_event.scroll();
-        });
+        //$(window).scroll(function () {
+        //    _.window_event.scroll();
+        //});
         
         return this;
     };

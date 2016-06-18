@@ -25,6 +25,8 @@ if (isset($profile["profile_name"]) === FALSE) {
     $profile["profile_name"] = "";
 }
 
+$profile["profile_name"] = "u" . $profile["profile_name"];
+
 $profile["client_ip"] = javascript_helper::get_client_ip();
 $profile["user_agent"] = javascript_helper::get_user_agent();
 $profile["http_referer"] = javascript_helper::get_http_referer();

@@ -25,4 +25,5 @@ PCL.etc_config = {
     
     // @TODO 正式實驗的時候要註解掉
     enable_log: false
+    //enable_log: true
 };
