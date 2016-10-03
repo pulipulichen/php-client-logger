@@ -10,3 +10,6 @@ $f3->route("POST /log/set","log_set->set");
 $f3->route("GET|POST /log/get/mouse/move/heatmap/live","log_get->mouse_move_heatmap_live");
 $f3->route("GET|POST /log/get/mouse/move_stay/heatmap","log_get->mouse_move_stay_heatmap");
 $f3->route("GET /pcl.js","pcl_client->script");
+
+$f3->route("GET /csv_import/form","csv_import->form");
+$f3->route("POST /csv_import/upload","csv_import->upload");

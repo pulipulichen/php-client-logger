@@ -47,7 +47,7 @@ class log_get {
         }
         
         if (isset($_GET["min_timestamp"]) === FALSE) {
-            $_GET["min_timestamp"] = javascript_helper::get_javascript_time() - 30000;
+            $_GET["min_timestamp"] = javascript_helper::get_javascript_time() - 3000;
             $min_timestamp = string_helper::bigintval($_GET["min_timestamp"]);
             $where_sql .= " AND timestamp > :min_timestamp";
             $parameters[":min_timestamp"] = $min_timestamp;
